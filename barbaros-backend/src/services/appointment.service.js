@@ -3,12 +3,12 @@ const {
   create,
 } = require("../repositories/appointment.repository");
 
-const getAllAppointments = () => {
-  return findAll();
+const getAllAppointments = async () => {
+  return await findAll();
 };
 
-const createAppointment = (appointmentData) => {
-  return create(appointmentData);
+const createAppointment = async (appointmentData) => {
+  return await create(appointmentData);
 };
 
 module.exports = {

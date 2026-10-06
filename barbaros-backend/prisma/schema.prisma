@@ -1,0 +1,22 @@
+// Barbaros Erkek Kuaförü - Prisma Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Appointment {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  service   String
+  barber    String
+  date      String
+  time      String
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+}

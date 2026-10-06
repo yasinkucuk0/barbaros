@@ -1,27 +1,26 @@
-const appointments = [
-  {
-    id: 1,
-    customerName: "Test Müşteri",
-    service: "Saç Kesimi",
-    barber: "Yasin",
-    date: "2026-10-10",
-    time: "14:00",
-  },
-];
+const { PrismaClient } = require("@prisma/client");
 
-const findAll = () => {
-  return appointments;
+const prisma = new PrismaClient();
+
+const findAll = async () => {
+  return await prisma.appointment.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 };
 
-const create = (appointmentData) => {
-  const newAppointment = {
-    id: appointments.length + 1,
-    ...appointmentData,
-  };
-
-  appointments.push(newAppointment);
-
-  return newAppointment;
+const create = async (appointmentData) => {
+  return await prisma.appointment.create({
+    data: {
+      name: appointmentData.name,
+      phone: appointmentData.phone,
+      service: appointmentData.service,
+      barber: appointmentData.barber,
+      date: appointmentData.date,
+      time: appointmentData.time,
+    },
+  });
 };
 
 module.exports = {
