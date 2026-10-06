@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import {
   CalendarDays,
@@ -47,16 +47,81 @@ function Booking() {
     phone: "",
   });
 
+  const [bookedTimes, setBookedTimes] = useState([]);
+  const [loadingTimes, setLoadingTimes] = useState(false);
+
   const selectedService = services.find(
     (service) => service.name === form.service
   );
 
   const updateForm = (field, value) => {
-    setForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setForm((prev) => {
+      const updatedForm = {
+        ...prev,
+        [field]: value,
+      };
+
+      if (field === "barber" || field === "date") {
+        updatedForm.time = "";
+      }
+
+      return updatedForm;
+    });
   };
+
+  useEffect(() => {
+    if (!form.barber || !form.date) {
+      setBookedTimes([]);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const fetchBookedTimes = async () => {
+      try {
+        setLoadingTimes(true);
+
+        const params = new URLSearchParams({
+          barber: form.barber,
+          date: form.date,
+        });
+
+        const response = await fetch(
+          `http://localhost:5000/api/appointments/booked-times?${params.toString()}`,
+          {
+            signal: controller.signal,
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            result.message || "Dolu saatler alınamadı."
+          );
+        }
+
+        setBookedTimes(result.data || []);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error(
+            "Dolu saatler alınırken hata:",
+            error
+          );
+
+          setBookedTimes([]);
+        }
+      } finally {
+        setLoadingTimes(false);
+      }
+    };
+
+    fetchBookedTimes();
+
+    return () => {
+      controller.abort();
+    };
+  }, [form.barber, form.date]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -81,9 +146,22 @@ function Booking() {
         );
       }
 
-      console.log("Backend cevabı:", result);
-
       alert("Randevunuz başarıyla oluşturuldu.");
+
+      setBookedTimes((prev) => {
+        if (prev.includes(form.time)) {
+          return prev;
+        }
+
+        return [...prev, form.time];
+      });
+
+      setForm((prev) => ({
+        ...prev,
+        time: "",
+        name: "",
+        phone: "",
+      }));
     } catch (error) {
       console.error("Randevu hatası:", error);
 
@@ -231,14 +309,36 @@ function Booking() {
                     updateForm("time", e.target.value)
                   }
                   required
+                  disabled={
+                    !form.barber ||
+                    !form.date ||
+                    loadingTimes
+                  }
                 >
-                  <option value="">Saat seçiniz</option>
+                  <option value="">
+                    {!form.barber || !form.date
+                      ? "Önce usta ve tarih seçiniz"
+                      : loadingTimes
+                      ? "Saatler kontrol ediliyor..."
+                      : "Saat seçiniz"}
+                  </option>
 
-                  {times.map((time) => (
-                    <option key={time} value={time}>
-                      {time}
-                    </option>
-                  ))}
+                  {times.map((time) => {
+                    const isBooked =
+                      bookedTimes.includes(time);
+
+                    return (
+                      <option
+                        key={time}
+                        value={time}
+                        disabled={isBooked}
+                      >
+                        {isBooked
+                          ? `${time} — DOLU`
+                          : time}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
             </div>

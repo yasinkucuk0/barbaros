@@ -1,5 +1,6 @@
 const {
   getAllAppointments,
+  getBookedTimes,
   createAppointment,
 } = require("../services/appointment.service");
 
@@ -21,9 +22,44 @@ const getAppointments = async (req, res) => {
   }
 };
 
+const getAppointmentBookedTimes = async (req, res) => {
+  try {
+    const { barber, date } = req.query;
+
+    if (!barber || !date) {
+      return res.status(400).json({
+        success: false,
+        message: "Berber ve tarih bilgisi gereklidir.",
+      });
+    }
+
+    const bookedTimes = await getBookedTimes(
+      barber,
+      date
+    );
+
+    res.json({
+      success: true,
+      data: bookedTimes,
+    });
+  } catch (error) {
+    console.error(
+      "Dolu saatler alınırken hata:",
+      error
+    );
+
+    res.status(500).json({
+      success: false,
+      message: "Dolu saatler alınamadı.",
+    });
+  }
+};
+
 const addAppointment = async (req, res) => {
   try {
-    const newAppointment = await createAppointment(req.body);
+    const newAppointment = await createAppointment(
+      req.body
+    );
 
     res.status(201).json({
       success: true,
@@ -31,7 +67,10 @@ const addAppointment = async (req, res) => {
       data: newAppointment,
     });
   } catch (error) {
-    console.error("Randevu oluşturulurken hata:", error);
+    console.error(
+      "Randevu oluşturulurken hata:",
+      error
+    );
 
     const statusCode = error.statusCode || 500;
 
@@ -47,5 +86,6 @@ const addAppointment = async (req, res) => {
 
 module.exports = {
   getAppointments,
+  getAppointmentBookedTimes,
   addAppointment,
 };

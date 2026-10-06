@@ -10,12 +10,31 @@ const findAll = async () => {
   });
 };
 
-const findByBarberDateAndTime = async (barber, date, time) => {
+const findByBarberDateAndTime = async (
+  barber,
+  date,
+  time
+) => {
   return await prisma.appointment.findFirst({
     where: {
       barber,
       date,
       time,
+    },
+  });
+};
+
+const findByBarberAndDate = async (barber, date) => {
+  return await prisma.appointment.findMany({
+    where: {
+      barber,
+      date,
+    },
+    select: {
+      time: true,
+    },
+    orderBy: {
+      time: "asc",
     },
   });
 };
@@ -36,5 +55,6 @@ const create = async (appointmentData) => {
 module.exports = {
   findAll,
   findByBarberDateAndTime,
+  findByBarberAndDate,
   create,
 };

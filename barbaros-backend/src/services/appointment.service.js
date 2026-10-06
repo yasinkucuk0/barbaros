@@ -1,6 +1,7 @@
 const {
   findAll,
   findByBarberDateAndTime,
+  findByBarberAndDate,
   create,
 } = require("../repositories/appointment.repository");
 
@@ -8,12 +9,24 @@ const getAllAppointments = async () => {
   return await findAll();
 };
 
-const createAppointment = async (appointmentData) => {
-  const existingAppointment = await findByBarberDateAndTime(
-    appointmentData.barber,
-    appointmentData.date,
-    appointmentData.time
+const getBookedTimes = async (barber, date) => {
+  const appointments = await findByBarberAndDate(
+    barber,
+    date
   );
+
+  return appointments.map(
+    (appointment) => appointment.time
+  );
+};
+
+const createAppointment = async (appointmentData) => {
+  const existingAppointment =
+    await findByBarberDateAndTime(
+      appointmentData.barber,
+      appointmentData.date,
+      appointmentData.time
+    );
 
   if (existingAppointment) {
     const error = new Error(
@@ -29,5 +42,6 @@ const createAppointment = async (appointmentData) => {
 
 module.exports = {
   getAllAppointments,
+  getBookedTimes,
   createAppointment,
 };
