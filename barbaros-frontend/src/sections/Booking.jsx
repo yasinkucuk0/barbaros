@@ -20,10 +20,7 @@ const services = [
   { name: "Keratin", price: 500 },
 ];
 
-const barbers = [
-  "Yasin Küçük",
-  "Emir Küçük",
-];
+const barbers = ["Yasin Küçük", "Emir Küçük"];
 
 const times = [
   "09:00",
@@ -91,7 +88,8 @@ function Booking() {
       console.error("Randevu hatası:", error);
 
       alert(
-        "Randevu oluşturulurken bir hata meydana geldi."
+        error.message ||
+          "Randevu oluşturulurken bir hata meydana geldi."
       );
     }
   };
@@ -194,10 +192,7 @@ function Booking() {
                 <option value="">Usta seçiniz</option>
 
                 {barbers.map((barber) => (
-                  <option
-                    key={barber}
-                    value={barber}
-                  >
+                  <option key={barber} value={barber}>
                     {barber}
                   </option>
                 ))}
@@ -207,7 +202,10 @@ function Booking() {
             <div className="booking-double">
               <div className="booking-field">
                 <label>
-                  <CalendarDays size={15} strokeWidth={1.3} />
+                  <CalendarDays
+                    size={15}
+                    strokeWidth={1.3}
+                  />
                   TARİH
                 </label>
 
@@ -237,10 +235,7 @@ function Booking() {
                   <option value="">Saat seçiniz</option>
 
                   {times.map((time) => (
-                    <option
-                      key={time}
-                      value={time}
-                    >
+                    <option key={time} value={time}>
                       {time}
                     </option>
                   ))}
@@ -251,7 +246,10 @@ function Booking() {
             <div className="booking-double">
               <div className="booking-field">
                 <label>
-                  <UserRound size={15} strokeWidth={1.3} />
+                  <UserRound
+                    size={15}
+                    strokeWidth={1.3}
+                  />
                   AD SOYAD
                 </label>
 
@@ -319,7 +317,6 @@ function Booking() {
               />
 
               <span>BARBAROS</span>
-
               <small>ERKEK KUAFÖRÜ</small>
             </div>
 

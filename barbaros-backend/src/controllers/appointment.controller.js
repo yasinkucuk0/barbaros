@@ -33,9 +33,14 @@ const addAppointment = async (req, res) => {
   } catch (error) {
     console.error("Randevu oluşturulurken hata:", error);
 
-    res.status(500).json({
+    const statusCode = error.statusCode || 500;
+
+    res.status(statusCode).json({
       success: false,
-      message: "Randevu oluşturulamadı.",
+      message:
+        statusCode === 500
+          ? "Randevu oluşturulamadı."
+          : error.message,
     });
   }
 };
