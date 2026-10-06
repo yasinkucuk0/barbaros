@@ -1,8 +1,10 @@
 const {
   findAll,
+  findById,
   findByBarberDateAndTime,
   findByBarberAndDate,
   create,
+  updateStatus,
 } = require("../repositories/appointment.repository");
 
 const allowedServices = [
@@ -36,10 +38,16 @@ const allowedTimes = [
   "20:00",
 ];
 
+const allowedStatuses = [
+  "pending",
+  "confirmed",
+  "completed",
+  "cancelled",
+];
+
 const createError = (message, statusCode = 400) => {
   const error = new Error(message);
   error.statusCode = statusCode;
-
   return error;
 };
 
@@ -96,21 +104,15 @@ const validateAppointment = (appointmentData) => {
   }
 
   if (!allowedServices.includes(service)) {
-    throw createError(
-      "Geçersiz hizmet seçimi."
-    );
+    throw createError("Geçersiz hizmet seçimi.");
   }
 
   if (!allowedBarbers.includes(barber)) {
-    throw createError(
-      "Geçersiz usta seçimi."
-    );
+    throw createError("Geçersiz usta seçimi.");
   }
 
   if (!allowedTimes.includes(time)) {
-    throw createError(
-      "Geçersiz randevu saati."
-    );
+    throw createError("Geçersiz randevu saati.");
   }
 
   const phoneDigits = phone.replace(/\D/g, "");
@@ -127,13 +129,10 @@ const validateAppointment = (appointmentData) => {
   const selectedDate = new Date(`${date}T00:00:00`);
 
   if (Number.isNaN(selectedDate.getTime())) {
-    throw createError(
-      "Geçersiz tarih bilgisi."
-    );
+    throw createError("Geçersiz tarih bilgisi.");
   }
 
   const today = new Date();
-
   today.setHours(0, 0, 0, 0);
 
   if (selectedDate < today) {
@@ -178,8 +177,39 @@ const createAppointment = async (appointmentData) => {
   }
 };
 
+const changeAppointmentStatus = async (
+  appointmentId,
+  status
+) => {
+  const id = Number(appointmentId);
+
+  if (!Number.isInteger(id) || id <= 0) {
+    throw createError(
+      "Geçersiz randevu numarası."
+    );
+  }
+
+  if (!allowedStatuses.includes(status)) {
+    throw createError(
+      "Geçersiz randevu durumu."
+    );
+  }
+
+  const appointment = await findById(id);
+
+  if (!appointment) {
+    throw createError(
+      "Randevu bulunamadı.",
+      404
+    );
+  }
+
+  return await updateStatus(id, status);
+};
+
 module.exports = {
   getAllAppointments,
   getBookedTimes,
   createAppointment,
+  changeAppointmentStatus,
 };

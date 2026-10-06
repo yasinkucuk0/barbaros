@@ -6468,3 +6468,68 @@ a.contact-card:hover {
     font-size: 7px;
   }
 }
+/* =========================================
+   ADMIN APPOINTMENT ACTIONS
+========================================= */
+
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-action-button {
+  min-height: 30px;
+  padding: 0 10px;
+
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  font-family: inherit;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.admin-action-confirm {
+  color: #8fbd91;
+  border-color: rgba(143, 189, 145, 0.24);
+}
+
+.admin-action-confirm:hover:not(:disabled) {
+  background: rgba(143, 189, 145, 0.09);
+  border-color: rgba(143, 189, 145, 0.55);
+}
+
+.admin-action-complete {
+  color: #8daec4;
+  border-color: rgba(141, 174, 196, 0.24);
+}
+
+.admin-action-complete:hover:not(:disabled) {
+  background: rgba(141, 174, 196, 0.09);
+  border-color: rgba(141, 174, 196, 0.55);
+}
+
+.admin-action-cancel {
+  color: #bd7777;
+  border-color: rgba(189, 119, 119, 0.24);
+}
+
+.admin-action-cancel:hover:not(:disabled) {
+  background: rgba(189, 119, 119, 0.09);
+  border-color: rgba(189, 119, 119, 0.55);
+}
+
+.admin-action-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}

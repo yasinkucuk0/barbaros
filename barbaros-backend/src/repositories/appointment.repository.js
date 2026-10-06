@@ -10,6 +10,14 @@ const findAll = async () => {
   });
 };
 
+const findById = async (id) => {
+  return await prisma.appointment.findUnique({
+    where: {
+      id,
+    },
+  });
+};
+
 const findByBarberDateAndTime = async (
   barber,
   date,
@@ -52,9 +60,22 @@ const create = async (appointmentData) => {
   });
 };
 
+const updateStatus = async (id, status) => {
+  return await prisma.appointment.update({
+    where: {
+      id,
+    },
+    data: {
+      status,
+    },
+  });
+};
+
 module.exports = {
   findAll,
+  findById,
   findByBarberDateAndTime,
   findByBarberAndDate,
   create,
+  updateStatus,
 };

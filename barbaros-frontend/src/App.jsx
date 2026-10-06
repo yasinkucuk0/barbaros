@@ -12,9 +12,11 @@ import Reviews from "./sections/Reviews";
 import Booking from "./sections/Booking";
 import Contact from "./sections/Contact";
 
+import AdminAppointments from "./admin/pages/AdminAppointments";
+
 import "./App.css";
 
-function App() {
+function MainSite() {
   const [introVisible, setIntroVisible] = useState(true);
 
   useEffect(() => {
@@ -41,6 +43,16 @@ function App() {
       <Contact />
     </main>
   );
+}
+
+function App() {
+  const path = window.location.pathname;
+
+  if (path === "/admin" || path === "/admin/") {
+    return <AdminAppointments />;
+  }
+
+  return <MainSite />;
 }
 
 export default App;
