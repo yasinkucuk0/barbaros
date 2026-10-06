@@ -19,4 +19,6 @@ model Appointment {
   time      String
   status    String   @default("pending")
   createdAt DateTime @default(now())
+
+  @@unique([barber, date, time])
 }

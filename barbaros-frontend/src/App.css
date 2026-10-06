@@ -6163,3 +6163,308 @@ a.contact-card:hover {
     font-size: 17px;
   }
 }
+/* =========================================
+   BARBAROS PREMIUM CALENDAR
+========================================= */
+
+.barbaros-date-picker {
+  position: relative;
+  width: 100%;
+}
+
+.barbaros-date-trigger {
+  width: 100%;
+  min-height: 58px;
+  padding: 0 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  background: rgba(8, 8, 8, 0.7);
+  border: 1px solid rgba(196, 160, 95, 0.18);
+
+  color: rgba(255, 255, 255, 0.45);
+
+  font: inherit;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.barbaros-date-trigger:hover,
+.barbaros-date-picker.is-open .barbaros-date-trigger {
+  border-color: rgba(202, 164, 96, 0.65);
+  background: rgba(18, 15, 10, 0.9);
+
+  box-shadow:
+    0 0 0 1px rgba(202, 164, 96, 0.06),
+    0 10px 35px rgba(0, 0, 0, 0.3);
+}
+
+.barbaros-date-trigger .has-date {
+  color: #f1e6d0;
+}
+
+.barbaros-date-trigger svg {
+  color: #b99150;
+  flex-shrink: 0;
+}
+
+/* TAKVİM PANELİ */
+
+.barbaros-calendar {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+
+  width: 100%;
+  min-width: 340px;
+
+  padding: 20px;
+
+  z-index: 100;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(183, 139, 70, 0.09),
+      transparent 45%
+    ),
+    #090806;
+
+  border: 1px solid rgba(202, 164, 96, 0.32);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.75),
+    0 0 40px rgba(177, 133, 63, 0.06);
+}
+
+/* TAKVİM ÜST ALANI */
+
+.barbaros-calendar-header {
+  display: grid;
+  grid-template-columns: 42px 1fr 42px;
+  align-items: center;
+
+  padding-bottom: 17px;
+  margin-bottom: 15px;
+
+  border-bottom: 1px solid rgba(202, 164, 96, 0.14);
+}
+
+.barbaros-calendar-header > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.barbaros-calendar-header strong {
+  color: #d0a85f;
+
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+
+.barbaros-calendar-header span {
+  color: rgba(255, 255, 255, 0.38);
+
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.barbaros-calendar-header button {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  background: transparent;
+
+  border: 1px solid rgba(202, 164, 96, 0.14);
+
+  color: #c8a05c;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.barbaros-calendar-header button:hover:not(:disabled) {
+  background: rgba(202, 164, 96, 0.1);
+  border-color: rgba(202, 164, 96, 0.5);
+
+  color: #f1d49c;
+}
+
+.barbaros-calendar-header button:disabled {
+  opacity: 0.18;
+  cursor: not-allowed;
+}
+
+/* HAFTA GÜNLERİ */
+
+.barbaros-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  margin-bottom: 8px;
+}
+
+.barbaros-calendar-weekdays span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 30px;
+
+  color: rgba(202, 164, 96, 0.48);
+
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+/* GÜNLER */
+
+.barbaros-calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.barbaros-calendar-days button,
+.calendar-empty {
+  aspect-ratio: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.barbaros-calendar-days button {
+  padding: 0;
+
+  background: transparent;
+  border: 1px solid transparent;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-family: inherit;
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.barbaros-calendar-days button:hover:not(:disabled) {
+  background: rgba(202, 164, 96, 0.1);
+  border-color: rgba(202, 164, 96, 0.3);
+
+  color: #f0d39a;
+
+  transform: translateY(-1px);
+}
+
+/* BUGÜN */
+
+.barbaros-calendar-days button.is-today {
+  border-color: rgba(202, 164, 96, 0.6);
+
+  color: #d5ae68;
+}
+
+/* SEÇİLEN TARİH */
+
+.barbaros-calendar-days button.is-selected {
+  background: #c8a460;
+  border-color: #c8a460;
+
+  color: #080705;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 6px 18px rgba(183, 139, 70, 0.2);
+}
+
+/* GEÇMİŞ TARİHLER */
+
+.barbaros-calendar-days button.is-past {
+  color: rgba(255, 255, 255, 0.12);
+
+  cursor: not-allowed;
+}
+
+/* ALT BİLGİ */
+
+.barbaros-calendar-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 16px;
+  padding-top: 13px;
+
+  border-top: 1px solid rgba(202, 164, 96, 0.1);
+
+  color: rgba(255, 255, 255, 0.25);
+
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+.barbaros-calendar-footer span {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #b88d48;
+
+  box-shadow: 0 0 8px rgba(184, 141, 72, 0.5);
+}
+
+/* MOBİL */
+
+@media (max-width: 768px) {
+  .barbaros-calendar {
+    min-width: 0;
+    width: 100%;
+
+    padding: 16px;
+  }
+
+  .barbaros-calendar-days {
+    gap: 2px;
+  }
+
+  .barbaros-calendar-days button {
+    font-size: 10px;
+  }
+
+  .barbaros-calendar-weekdays span {
+    font-size: 7px;
+  }
+}

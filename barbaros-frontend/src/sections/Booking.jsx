@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
 import {
   CalendarDays,
@@ -7,6 +7,8 @@ import {
   Phone,
   Scissors,
   ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 const services = [
@@ -37,6 +39,49 @@ const times = [
   "20:00",
 ];
 
+const monthNames = [
+  "OCAK",
+  "ŞUBAT",
+  "MART",
+  "NİSAN",
+  "MAYIS",
+  "HAZİRAN",
+  "TEMMUZ",
+  "AĞUSTOS",
+  "EYLÜL",
+  "EKİM",
+  "KASIM",
+  "ARALIK",
+];
+
+const dayNames = [
+  "PZT",
+  "SAL",
+  "ÇAR",
+  "PER",
+  "CUM",
+  "CMT",
+  "PAZ",
+];
+
+const pad = (value) => String(value).padStart(2, "0");
+
+const toDateString = (date) => {
+  return `${date.getFullYear()}-${pad(
+    date.getMonth() + 1
+  )}-${pad(date.getDate())}`;
+};
+
+const formatDisplayDate = (dateString) => {
+  if (!dateString) {
+    return "Tarih seçiniz";
+  }
+
+  const [year, month, day] = dateString.split("-");
+
+  return `${day}.${month}.${year}`;
+};
+
 function Booking() {
   const [form, setForm] = useState({
     service: "",
@@ -49,6 +94,18 @@ function Booking() {
 
   const [bookedTimes, setBookedTimes] = useState([]);
   const [loadingTimes, setLoadingTimes] = useState(false);
+
+  const [calendarOpen, setCalendarOpen] = useState(false);
+
+  const today = useMemo(() => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }, []);
+
+  const [calendarDate, setCalendarDate] = useState(
+    new Date(today.getFullYear(), today.getMonth(), 1)
+  );
 
   const selectedService = services.find(
     (service) => service.name === form.service
@@ -67,6 +124,80 @@ function Booking() {
 
       return updatedForm;
     });
+  };
+
+  const calendarDays = useMemo(() => {
+    const year = calendarDate.getFullYear();
+    const month = calendarDate.getMonth();
+
+    const firstDay = new Date(year, month, 1);
+
+    // JavaScript: Pazar = 0
+    // Biz: Pazartesi = ilk gün
+    const firstDayIndex = (firstDay.getDay() + 6) % 7;
+
+    const daysInMonth = new Date(
+      year,
+      month + 1,
+      0
+    ).getDate();
+
+    const cells = [];
+
+    for (let i = 0; i < firstDayIndex; i += 1) {
+      cells.push(null);
+    }
+
+    for (let day = 1; day <= daysInMonth; day += 1) {
+      cells.push(new Date(year, month, day));
+    }
+
+    return cells;
+  }, [calendarDate]);
+
+  const previousMonthDisabled =
+    calendarDate.getFullYear() === today.getFullYear() &&
+    calendarDate.getMonth() === today.getMonth();
+
+  const goToPreviousMonth = () => {
+    if (previousMonthDisabled) {
+      return;
+    }
+
+    setCalendarDate(
+      (prev) =>
+        new Date(
+          prev.getFullYear(),
+          prev.getMonth() - 1,
+          1
+        )
+    );
+  };
+
+  const goToNextMonth = () => {
+    setCalendarDate(
+      (prev) =>
+        new Date(
+          prev.getFullYear(),
+          prev.getMonth() + 1,
+          1
+        )
+    );
+  };
+
+  const selectDate = (date) => {
+    const normalizedDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+
+    if (normalizedDate < today) {
+      return;
+    }
+
+    updateForm("date", toDateString(normalizedDate));
+    setCalendarOpen(false);
   };
 
   useEffect(() => {
@@ -112,7 +243,9 @@ function Booking() {
           setBookedTimes([]);
         }
       } finally {
-        setLoadingTimes(false);
+        if (!controller.signal.aborted) {
+          setLoadingTimes(false);
+        }
       }
     };
 
@@ -203,9 +336,9 @@ function Booking() {
             </h2>
 
             <p>
-              Hizmetini ve ustanı seç.
-              Sana uygun tarih ve saati belirle.
-              Barbaros deneyimi için yerini ayırt.
+              Hizmetini ve ustanı seç. Sana uygun tarih
+              ve saati belirle. Barbaros deneyimi için
+              yerini ayırt.
             </p>
           </div>
         </motion.div>
@@ -287,14 +420,145 @@ function Booking() {
                   TARİH
                 </label>
 
-                <input
-                  type="date"
-                  value={form.date}
-                  onChange={(e) =>
-                    updateForm("date", e.target.value)
-                  }
-                  required
-                />
+                <div
+                  className={`barbaros-date-picker ${
+                    calendarOpen ? "is-open" : ""
+                  }`}
+                >
+                  <button
+                    type="button"
+                    className="barbaros-date-trigger"
+                    onClick={() =>
+                      setCalendarOpen((prev) => !prev)
+                    }
+                  >
+                    <span
+                      className={
+                        form.date ? "has-date" : ""
+                      }
+                    >
+                      {formatDisplayDate(form.date)}
+                    </span>
+
+                    <CalendarDays
+                      size={17}
+                      strokeWidth={1.2}
+                    />
+                  </button>
+
+                  {calendarOpen && (
+                    <motion.div
+                      className="barbaros-calendar"
+                      initial={{
+                        opacity: 0,
+                        y: 10,
+                        scale: 0.98,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                      }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="barbaros-calendar-header">
+                        <button
+                          type="button"
+                          onClick={goToPreviousMonth}
+                          disabled={previousMonthDisabled}
+                          aria-label="Önceki ay"
+                        >
+                          <ChevronLeft
+                            size={18}
+                            strokeWidth={1.3}
+                          />
+                        </button>
+
+                        <div>
+                          <strong>
+                            {
+                              monthNames[
+                                calendarDate.getMonth()
+                              ]
+                            }
+                          </strong>
+                          <span>
+                            {calendarDate.getFullYear()}
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={goToNextMonth}
+                          aria-label="Sonraki ay"
+                        >
+                          <ChevronRight
+                            size={18}
+                            strokeWidth={1.3}
+                          />
+                        </button>
+                      </div>
+
+                      <div className="barbaros-calendar-weekdays">
+                        {dayNames.map((day) => (
+                          <span key={day}>{day}</span>
+                        ))}
+                      </div>
+
+                      <div className="barbaros-calendar-days">
+                        {calendarDays.map((date, index) => {
+                          if (!date) {
+                            return (
+                              <span
+                                className="calendar-empty"
+                                key={`empty-${index}`}
+                              />
+                            );
+                          }
+
+                          const dateString =
+                            toDateString(date);
+
+                          const isPast = date < today;
+
+                          const isToday =
+                            dateString ===
+                            toDateString(today);
+
+                          const isSelected =
+                            dateString === form.date;
+
+                          return (
+                            <button
+                              type="button"
+                              key={dateString}
+                              disabled={isPast}
+                              className={[
+                                isPast ? "is-past" : "",
+                                isToday ? "is-today" : "",
+                                isSelected
+                                  ? "is-selected"
+                                  : "",
+                              ]
+                                .filter(Boolean)
+                                .join(" ")}
+                              onClick={() =>
+                                selectDate(date)
+                              }
+                            >
+                              {date.getDate()}
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <div className="barbaros-calendar-footer">
+                        <span />
+                        GEÇMİŞ TARİHLER KAPALI
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
               </div>
 
               <div className="booking-field">
@@ -438,7 +702,9 @@ function Booking() {
               <div>
                 <span>TARİH</span>
                 <strong>
-                  {form.date || "—"}
+                  {form.date
+                    ? formatDisplayDate(form.date)
+                    : "—"}
                 </strong>
               </div>
 
