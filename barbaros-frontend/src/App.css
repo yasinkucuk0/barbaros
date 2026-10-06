@@ -1,0 +1,6165 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Montserrat:wght@400;500;600;700&display=swap");
+
+:root {
+  --black: #050505;
+  --soft-black: #0b0b0b;
+  --cream: #f1e9dc;
+  --gold: #c5a66a;
+  --white: #f7f4ee;
+  --muted: #b8b3aa;
+}
+
+.site {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--black);
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  background:
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(165, 132, 77, 0.13),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      #12110f 0%,
+      #090909 42%,
+      #040404 100%
+    );
+}
+
+/* GRID */
+
+.hero::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: -4;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+
+  mask-image:
+    radial-gradient(
+      circle at center,
+      black 20%,
+      transparent 80%
+    );
+
+  animation: gridMove 18s linear infinite;
+}
+
+@keyframes gridMove {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(80px);
+  }
+}
+
+/* IŞIKLAR */
+
+.hero-glow {
+  position: absolute;
+
+  width: 650px;
+  height: 650px;
+
+  border-radius: 50%;
+
+  filter: blur(150px);
+
+  opacity: 0.16;
+
+  pointer-events: none;
+
+  z-index: -3;
+}
+
+.hero-glow-left {
+  top: -350px;
+  left: -300px;
+
+  background: #b18a4f;
+
+  animation: glowLeft 12s ease-in-out infinite alternate;
+}
+
+.hero-glow-right {
+  right: -350px;
+  bottom: -350px;
+
+  background: #8f6c3b;
+
+  animation: glowRight 14s ease-in-out infinite alternate;
+}
+
+@keyframes glowLeft {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(120px, 100px) scale(1.15);
+  }
+}
+
+@keyframes glowRight {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(-120px, -80px) scale(1.2);
+  }
+}
+
+/* NOISE */
+
+.hero-noise {
+  position: absolute;
+  inset: 0;
+
+  z-index: -2;
+
+  opacity: 0.035;
+
+  pointer-events: none;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.8'/%3E%3C/svg%3E");
+}
+
+/* NAVBAR */
+
+.navbar {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  z-index: 20;
+
+  width: 100%;
+
+  padding: 32px 4.5vw;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  color: var(--white);
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+}
+
+.brand svg {
+  color: var(--gold);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+
+  gap: 45px;
+}
+
+.nav-links a {
+  position: relative;
+
+  color: #c3beb4;
+
+  text-decoration: none;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.nav-links a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -9px;
+
+  width: 0;
+  height: 1px;
+
+  background: var(--gold);
+
+  transition: width 0.35s ease;
+}
+
+.nav-links a:hover {
+  color: white;
+
+  transform: translateY(-2px);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-instagram {
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  color: var(--white);
+
+  text-decoration: none;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 1px;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.nav-instagram:hover {
+  background: var(--gold);
+
+  border-color: var(--gold);
+
+  color: #080808;
+
+  transform: rotate(4deg) scale(1.05);
+}
+
+/* HERO CONTENT */
+
+.hero-content {
+  position: relative;
+
+  z-index: 5;
+
+  width: min(1200px, 92%);
+
+  text-align: center;
+}
+
+/* HASSA */
+
+.hero-eyebrow {
+  margin-bottom: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+
+  color: #d3b579;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 5px;
+
+  text-shadow:
+    0 0 20px rgba(197, 166, 106, 0.2);
+}
+
+.hero-eyebrow span {
+  width: 42px;
+  height: 1px;
+
+  background: var(--gold);
+}
+
+/* BAŞLIK */
+
+.hero-title-wrapper {
+  overflow: visible;
+}
+
+.hero-small-title {
+  margin-bottom: 3px;
+
+  color: #d0cbc1;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: clamp(11px, 0.8vw, 14px);
+
+  font-weight: 500;
+
+  letter-spacing: 10px;
+
+  text-indent: 10px;
+
+  text-shadow:
+    0 2px 20px rgba(0, 0, 0, 0.8);
+}
+
+.hero h1 {
+  margin: 0;
+
+  color: var(--white);
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: clamp(90px, 11vw, 205px);
+
+  font-weight: 500;
+
+  line-height: 0.88;
+
+  letter-spacing: -4px;
+
+  text-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.55),
+    0 0 80px rgba(197, 166, 106, 0.04);
+
+  animation: titleBreath 6s ease-in-out infinite alternate;
+}
+
+@keyframes titleBreath {
+  from {
+    letter-spacing: -4px;
+  }
+
+  to {
+    letter-spacing: 1px;
+  }
+}
+
+/* ALTIN ÇİZGİ */
+
+.hero-line {
+  width: 85px;
+  height: 1px;
+
+  margin: 38px auto 30px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--gold),
+      transparent
+    );
+
+  box-shadow:
+    0 0 15px rgba(197, 166, 106, 0.4);
+
+  transform-origin: center;
+}
+
+/* AÇIKLAMA */
+
+.hero-description {
+  color: #d0cbc1;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: clamp(20px, 1.35vw, 26px);
+
+  font-style: italic;
+  font-weight: 500;
+
+  line-height: 1.55;
+
+  letter-spacing: 0.4px;
+
+  text-shadow:
+    0 2px 15px rgba(0, 0, 0, 0.9);
+}
+
+/* BUTONLAR */
+
+.hero-actions {
+  margin-top: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 32px;
+}
+
+.primary-button {
+  position: relative;
+
+  min-width: 205px;
+
+  padding: 18px 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  overflow: hidden;
+
+  background: var(--cream);
+
+  color: #090909;
+
+  text-decoration: none;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.25);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.primary-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 70%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.65),
+      transparent
+    );
+
+  transform: skewX(-25deg);
+
+  transition: left 0.7s ease;
+}
+
+.primary-button:hover::before {
+  left: 140%;
+}
+
+.primary-button:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 15px 50px rgba(197, 166, 106, 0.13);
+}
+
+.primary-button span {
+  position: relative;
+
+  z-index: 2;
+}
+
+.button-arrow {
+  font-size: 18px;
+
+  transition: transform 0.3s ease;
+}
+
+.primary-button:hover .button-arrow {
+  transform: translate(3px, -3px);
+}
+
+.secondary-button {
+  color: #cbc6bc;
+
+  text-decoration: none;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 3px;
+
+  border-bottom:
+    1px solid rgba(197, 166, 106, 0.45);
+
+  padding-bottom: 7px;
+
+  transition:
+    color 0.3s ease,
+    letter-spacing 0.3s ease;
+}
+
+.secondary-button:hover {
+  color: white;
+
+  letter-spacing: 4px;
+}
+
+/* SCROLL */
+
+.scroll-indicator {
+  position: absolute;
+
+  z-index: 5;
+
+  bottom: 27px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 10px;
+
+  color: #aaa59c;
+}
+
+.scroll-indicator span {
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 500;
+
+  letter-spacing: 4px;
+
+  writing-mode: vertical-rl;
+}
+
+.hero-number {
+  position: absolute;
+
+  right: 4.5vw;
+  bottom: 34px;
+
+  color: #6e6960;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: 15px;
+
+  letter-spacing: 2px;
+}
+
+/* MOBİL */
+
+@media (max-width: 768px) {
+
+  .navbar {
+    padding: 23px 20px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .brand {
+    font-size: 12px;
+
+    letter-spacing: 3px;
+  }
+
+  .nav-instagram {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hero-content {
+    width: 94%;
+
+    padding: 0 10px;
+  }
+
+  .hero-eyebrow {
+    margin-bottom: 24px;
+
+    font-size: 9px;
+
+    letter-spacing: 3px;
+  }
+
+  .hero-eyebrow span {
+    width: 25px;
+  }
+
+  .hero-small-title {
+    margin-bottom: 8px;
+
+    font-size: 10px;
+
+    letter-spacing: 6px;
+
+    text-indent: 6px;
+  }
+
+  .hero h1 {
+    font-size: clamp(64px, 21vw, 110px);
+
+    letter-spacing: -3px;
+  }
+
+  .hero-line {
+    margin: 30px auto 25px;
+  }
+
+  .hero-description {
+    font-size: 20px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+
+    gap: 23px;
+
+    margin-top: 32px;
+  }
+
+  .primary-button {
+    width: min(290px, 92%);
+
+    padding: 18px 22px;
+  }
+
+  .secondary-button {
+    font-size: 9px;
+  }
+
+  .scroll-indicator {
+    bottom: 15px;
+  }
+
+  .hero-number {
+    display: none;
+  }
+}
+
+/* ÇOK KÜÇÜK TELEFONLAR */
+
+@media (max-width: 390px) {
+
+  .hero h1 {
+    font-size: 61px;
+  }
+
+  .hero-description {
+    font-size: 18px;
+  }
+
+  .hero-eyebrow {
+    font-size: 8px;
+  }
+}
+/* ========================================
+   BARBAROS CINEMATIC INTRO
+======================================== */
+
+.intro {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+.intro-panel {
+  position: absolute;
+  top: 0;
+
+  width: 50.1%;
+  height: 100%;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #15120e 0%,
+      #090909 50%,
+      #030303 100%
+    );
+}
+
+.intro-panel-left {
+  left: 0;
+}
+
+.intro-panel-right {
+  right: 0;
+}
+
+.intro-content {
+  position: relative;
+
+  z-index: 5;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+.intro-mark {
+  margin-bottom: 24px;
+
+  color: var(--gold);
+}
+
+.intro-title-mask {
+  overflow: hidden;
+
+  padding: 0 15px;
+}
+
+.intro-title-mask h2 {
+  margin: 0;
+
+  color: var(--white);
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: clamp(60px, 9vw, 150px);
+
+  font-weight: 500;
+
+  line-height: 0.9;
+
+  letter-spacing: 3px;
+}
+
+.intro-content p {
+  margin-top: 18px;
+
+  color: #bdb6aa;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 9px;
+  font-weight: 500;
+
+  letter-spacing: 7px;
+
+  text-indent: 7px;
+}
+
+.intro-loader {
+  position: relative;
+
+  width: 170px;
+  height: 1px;
+
+  margin-top: 34px;
+
+  overflow: hidden;
+
+  background:
+    rgba(255, 255, 255, 0.1);
+}
+
+.intro-loader-fill {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #80683f,
+      #d3b579,
+      #80683f
+    );
+
+  transform-origin: left;
+
+  box-shadow:
+    0 0 15px rgba(197, 166, 106, 0.5);
+}
+
+@media (max-width: 768px) {
+  .intro-title-mask h2 {
+    font-size: clamp(55px, 19vw, 100px);
+
+    letter-spacing: 0;
+  }
+
+  .intro-content p {
+    font-size: 8px;
+
+    letter-spacing: 5px;
+
+    text-indent: 5px;
+  }
+
+  .intro-loader {
+    width: 130px;
+  }
+}
+/* ========================================
+   HERO VINTAGE BARBER BACKGROUND
+======================================== */
+
+.hero {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 3, 3, 0.82) 0%,
+      rgba(5, 5, 5, 0.66) 30%,
+      rgba(5, 5, 5, 0.70) 50%,
+      rgba(5, 5, 5, 0.66) 70%,
+      rgba(3, 3, 3, 0.84) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.08) 45%,
+      rgba(0, 0, 0, 0.60) 100%
+    ),
+    url("./assets/hero-barber.jpg");
+
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+}
+
+/* Fotoğrafın kenarlarını sinematik şekilde karartır */
+.hero::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 20%,
+      rgba(0, 0, 0, 0.15) 50%,
+      rgba(0, 0, 0, 0.62) 100%
+    );
+}
+
+/* Grid fotoğraf üzerinde daha zarif görünsün */
+.hero::before {
+  opacity: 0.45;
+  z-index: 1;
+}
+
+/* Yazılar fotoğrafın kesinlikle üzerinde kalsın */
+.hero-content {
+  z-index: 5;
+}
+
+.navbar {
+  z-index: 20;
+}
+
+.scroll-indicator,
+.hero-number {
+  z-index: 5;
+}
+
+/* Fotoğraf geldikten sonra eski glow'ları azaltıyoruz */
+.hero-glow {
+  opacity: 0.07;
+}
+
+/* Mobil */
+@media (max-width: 768px) {
+  .hero {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(3, 3, 3, 0.60) 0%,
+        rgba(3, 3, 3, 0.68) 45%,
+        rgba(3, 3, 3, 0.85) 100%
+      ),
+      url("./assets/hero-barber.jpg");
+
+    background-size: cover;
+    background-position: center center;
+  }
+}
+/* ==================================================
+   BARBAROS - HERO BACKGROUND IMAGE
+================================================== */
+
+.hero {
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(4, 4, 4, 0.78) 0%,
+      rgba(4, 4, 4, 0.58) 25%,
+      rgba(4, 4, 4, 0.48) 50%,
+      rgba(4, 4, 4, 0.58) 75%,
+      rgba(4, 4, 4, 0.78) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.10) 45%,
+      rgba(0, 0, 0, 0.65) 100%
+    ),
+    url("./assets/hero-barber.png");
+
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+/* Sinematik kenar karartması */
+
+.hero::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 15%,
+      rgba(0, 0, 0, 0.12) 45%,
+      rgba(0, 0, 0, 0.68) 100%
+    );
+}
+
+/* Grid fotoğrafın üzerinde hafif görünsün */
+
+.hero::before {
+  z-index: 2;
+  opacity: 0.22;
+}
+
+/* İçerikler fotoğraf ve efektlerin üzerinde */
+
+.hero-content {
+  position: relative;
+  z-index: 5;
+}
+
+.navbar {
+  z-index: 20;
+}
+
+.scroll-indicator,
+.hero-number {
+  z-index: 5;
+}
+
+/* Eski ışık efektlerini fotoğraf üzerinde hafiflet */
+
+.hero-glow {
+  opacity: 0.04;
+}
+
+/* TELEFON */
+
+@media (max-width: 768px) {
+  .hero {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(3, 3, 3, 0.58) 0%,
+        rgba(3, 3, 3, 0.48) 40%,
+        rgba(3, 3, 3, 0.82) 100%
+      ),
+      url("./assets/hero-barber.png");
+
+    background-size: cover;
+    background-position: 48% center;
+  }
+}
+/* ==================================================
+   02 — BARBAROS CINEMATIC ABOUT
+================================================== */
+
+.about-cinematic {
+  position: relative;
+  width: 100%;
+  padding: 135px 0 0;
+  overflow: hidden;
+  color: #f5f1e9;
+  background:
+    radial-gradient(
+      circle at 15% 18%,
+      rgba(181, 139, 70, 0.11),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      #080706 0%,
+      #050505 55%,
+      #070604 100%
+    );
+}
+
+/* ------------------------------------------
+   ARKA PLAN GRID
+------------------------------------------ */
+
+.about-cinematic-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  opacity: 0.18;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.035) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 65%
+    );
+}
+
+.about-cinematic-glow {
+  position: absolute;
+  top: 180px;
+  left: -250px;
+
+  width: 650px;
+  height: 650px;
+
+  border-radius: 50%;
+
+  background: rgba(169, 124, 59, 0.11);
+
+  filter: blur(160px);
+
+  pointer-events: none;
+}
+
+/* ------------------------------------------
+   CONTAINER
+------------------------------------------ */
+
+.about-container {
+  position: relative;
+  z-index: 5;
+
+  width: min(1380px, 88%);
+  margin: 0 auto;
+}
+
+/* ------------------------------------------
+   DEV 15
+------------------------------------------ */
+
+.about-background-number {
+  position: absolute;
+
+  top: 80px;
+  right: -3vw;
+
+  z-index: 1;
+
+  color: transparent;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: clamp(300px, 38vw, 650px);
+  font-weight: 600;
+
+  line-height: 0.75;
+
+  -webkit-text-stroke:
+    1px rgba(197, 166, 106, 0.055);
+
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ------------------------------------------
+   BAŞLIK
+------------------------------------------ */
+
+.about-heading {
+  position: relative;
+  z-index: 6;
+
+  margin-bottom: 75px;
+}
+
+.about-section-label {
+  margin-bottom: 24px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  color: #c5a66a;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+}
+
+.about-section-label div {
+  width: 48px;
+  height: 1px;
+
+  background:
+    rgba(197, 166, 106, 0.65);
+}
+
+.about-heading h2 {
+  margin: 0;
+
+  color: #f5f0e7;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: clamp(75px, 8.2vw, 140px);
+  font-weight: 500;
+
+  line-height: 0.75;
+
+  letter-spacing: -3px;
+}
+
+.about-heading h2 em {
+  color: #b99052;
+
+  font-weight: 400;
+}
+
+/* ==================================================
+   ANA HİKÂYE
+================================================== */
+
+.about-cinematic-story {
+  position: relative;
+
+  z-index: 5;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(260px, 0.72fr)
+    minmax(400px, 1.25fr)
+    minmax(300px, 0.85fr);
+
+  gap: 42px;
+
+  align-items: center;
+
+  margin-bottom: 125px;
+}
+
+/* ------------------------------------------
+   SOL METİN
+------------------------------------------ */
+
+.about-cinematic-intro {
+  position: relative;
+
+  z-index: 4;
+
+  padding-right: 10px;
+}
+
+.about-cinematic-intro svg {
+  margin-bottom: 28px;
+
+  color: #c5a66a;
+}
+
+.about-cinematic-intro p {
+  margin: 0;
+
+  color: #eee7dc;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: clamp(27px, 2vw, 37px);
+  font-weight: 400;
+
+  line-height: 1.3;
+}
+
+.about-cinematic-intro strong {
+  color: #c5a66a;
+
+  font-weight: 500;
+}
+
+.about-signature {
+  margin-top: 38px;
+
+  color: #c5a66a;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: 18px;
+
+  letter-spacing: 3px;
+}
+
+.about-signature span {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #706b62;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 7px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+}
+
+/* ------------------------------------------
+   ANA BERBER FOTOĞRAFI
+------------------------------------------ */
+
+.about-main-photo {
+  position: relative;
+
+  height: 610px;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(197, 166, 106, 0.14);
+
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.5);
+}
+
+.about-main-photo::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 18px;
+
+  z-index: 4;
+
+  border:
+    1px solid rgba(197, 166, 106, 0.13);
+
+  pointer-events: none;
+}
+
+.about-main-photo img {
+  position: absolute;
+
+  top: -10%;
+  left: -5%;
+
+  width: 110%;
+  height: 120%;
+
+  display: block;
+
+  object-fit: cover;
+
+  filter:
+    brightness(0.72)
+    contrast(1.08)
+    saturate(0.85);
+}
+
+.about-photo-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 5, 5, 0.32),
+      transparent 35%,
+      transparent 65%,
+      rgba(5, 5, 5, 0.38)
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.08),
+      transparent 50%,
+      rgba(0, 0, 0, 0.72)
+    );
+}
+
+.about-photo-caption {
+  position: absolute;
+
+  z-index: 5;
+
+  right: 28px;
+  bottom: 26px;
+
+  color: #d7c7a9;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  letter-spacing: 3px;
+
+  text-align: right;
+}
+
+.about-photo-caption span {
+  display: block;
+
+  color: #c5a66a;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: 45px;
+  font-weight: 500;
+
+  line-height: 0.8;
+
+  letter-spacing: 0;
+}
+
+/* ------------------------------------------
+   SAĞ METİN
+------------------------------------------ */
+
+.about-cinematic-text {
+  position: relative;
+
+  z-index: 4;
+}
+
+.about-cinematic-text p {
+  margin: 0 0 22px;
+
+  color: #aaa49a;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 12px;
+  font-weight: 400;
+
+  line-height: 1.85;
+}
+
+.about-cinematic-text strong {
+  color: #eee5d6;
+
+  font-weight: 600;
+}
+
+/* ==================================================
+   ALINTI
+================================================== */
+
+.about-cinematic-quote {
+  position: relative;
+
+  z-index: 6;
+
+  width: min(900px, 90%);
+
+  margin: 0 auto 125px;
+
+  text-align: center;
+}
+
+.quote-line {
+  width: 100%;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(197, 166, 106, 0.42),
+      transparent
+    );
+}
+
+.quote-symbol {
+  position: relative;
+
+  display: inline-block;
+
+  margin: -27px auto 10px;
+
+  padding: 0 20px;
+
+  background: #060606;
+
+  color: #c5a66a;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: 68px;
+
+  line-height: 0.8;
+}
+
+.about-cinematic-quote p {
+  margin: 20px 0 35px;
+
+  color: #e3dbce;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: clamp(27px, 2.3vw, 40px);
+  font-style: italic;
+
+  line-height: 1.45;
+}
+
+.about-cinematic-quote strong {
+  color: #c5a66a;
+
+  font-weight: 500;
+}
+
+/* ==================================================
+   SİNEMATİK YOLCULUK
+================================================== */
+
+.cinematic-journey {
+  position: relative;
+
+  z-index: 5;
+
+  width: 100vw;
+
+  margin-left:
+    calc(50% - 50vw);
+}
+
+.cinematic-journey .journey-title {
+  width: min(1380px, 88%);
+
+  margin:
+    0 auto
+    35px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  color: #c5a66a;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+}
+
+.journey-visual {
+  position: relative;
+
+  min-height: 630px;
+
+  overflow: hidden;
+
+  background: #050505;
+}
+
+/* ------------------------------------------
+   4 FOTOĞRAFI TEK PANORAMA GİBİ YAP
+------------------------------------------ */
+
+.journey-images {
+  position: absolute;
+
+  inset: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+}
+
+.journey-image {
+  position: relative;
+
+  min-width: 0;
+
+  overflow: hidden;
+}
+
+.journey-image img {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  filter:
+    brightness(0.48)
+    saturate(0.75)
+    contrast(1.08);
+
+  transition:
+    filter 0.7s ease,
+    transform 1.2s
+    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.journey-image:hover img {
+  filter:
+    brightness(0.75)
+    saturate(0.95)
+    contrast(1.05);
+
+  transform: scale(1.04);
+}
+
+.journey-image-shade {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 5, 5, 0.6),
+      transparent 35%,
+      transparent 65%,
+      rgba(5, 5, 5, 0.6)
+    ),
+    linear-gradient(
+      180deg,
+      rgba(5, 5, 5, 0.2) 0%,
+      rgba(5, 5, 5, 0.08) 35%,
+      rgba(5, 5, 5, 0.78) 75%,
+      #050505 100%
+    );
+}
+
+/* Fotoğraflar arasında sert çizgi olmasın */
+
+.journey-image:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  z-index: 3;
+
+  top: 0;
+  right: -60px;
+
+  width: 120px;
+  height: 100%;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(5, 5, 5, 0.35),
+      transparent
+    );
+}
+
+/* ==================================================
+   ALTIN ROTA
+================================================== */
+
+.journey-route {
+  position: absolute;
+
+  z-index: 8;
+
+  left: 6%;
+  right: 6%;
+
+  bottom: 205px;
+
+  height: 1px;
+}
+
+.journey-route-base,
+.journey-route-progress {
+  position: absolute;
+
+  inset: 0;
+}
+
+.journey-route-base {
+  background:
+    rgba(197, 166, 106, 0.2);
+}
+
+.journey-route-progress {
+  background:
+    linear-gradient(
+      90deg,
+      #80653b,
+      #e2bd74,
+      #80653b
+    );
+
+  box-shadow:
+    0 0 18px
+    rgba(197, 166, 106, 0.35);
+
+  transform-origin: left;
+}
+
+/* ==================================================
+   YOLCULUK KARTLARI
+================================================== */
+
+.journey-cards {
+  position: absolute;
+
+  z-index: 10;
+
+  left: 6%;
+  right: 6%;
+
+  bottom: 55px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+}
+
+.journey-card {
+  position: relative;
+
+  padding-right: 30px;
+}
+
+.journey-card-number {
+  position: absolute;
+
+  bottom: 164px;
+  left: 0;
+
+  color: #b49a6b;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  letter-spacing: 2px;
+}
+
+.journey-card-dot {
+  position: absolute;
+
+  bottom: 137px;
+  left: 0;
+
+  width: 13px;
+  height: 13px;
+
+  transform:
+    translate(-50%, 50%);
+
+  border:
+    2px solid #c5a66a;
+
+  border-radius: 50%;
+
+  background: #090806;
+
+  box-shadow:
+    0 0 0 6px
+    rgba(197, 166, 106, 0.1),
+    0 0 25px
+    rgba(197, 166, 106, 0.25);
+}
+
+.journey-card h3 {
+  margin: 0 0 7px;
+
+  color: #f1ece3;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 3px;
+}
+
+.journey-card h4 {
+  margin: 0 0 7px;
+
+  max-width: 280px;
+
+  color: #c5a66a;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: clamp(19px, 1.4vw, 25px);
+  font-weight: 500;
+
+  line-height: 1.05;
+}
+
+.journey-card h5 {
+  margin: 0 0 8px;
+
+  color: #d7c8aa;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  letter-spacing: 1.5px;
+}
+
+.journey-card p {
+  max-width: 220px;
+
+  margin: 0;
+
+  color: #858078;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 9px;
+
+  line-height: 1.6;
+}
+
+/* ==================================================
+   HOVER — ŞEHİR PARLASIN
+================================================== */
+
+.journey-card:hover h4 {
+  color: #e2bd74;
+}
+
+.journey-card:hover
+.journey-card-dot {
+  background: #c5a66a;
+
+  box-shadow:
+    0 0 0 7px
+    rgba(197, 166, 106, 0.12),
+    0 0 30px
+    rgba(197, 166, 106, 0.5);
+}
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 1100px) {
+
+  .about-cinematic-story {
+    grid-template-columns:
+      0.8fr
+      1.2fr;
+
+    gap: 40px;
+  }
+
+  .about-cinematic-text {
+    grid-column:
+      1 / -1;
+
+    columns: 2;
+
+    column-gap: 45px;
+
+    margin-top: 20px;
+  }
+
+  .about-main-photo {
+    height: 550px;
+  }
+
+  .journey-card h4 {
+    font-size: 20px;
+  }
+}
+
+/* ==================================================
+   MOBİL
+================================================== */
+
+@media (max-width: 768px) {
+
+  .about-cinematic {
+    padding-top: 90px;
+  }
+
+  .about-container {
+    width: 88%;
+  }
+
+  .about-background-number {
+    top: 130px;
+    right: -60px;
+
+    font-size: 300px;
+  }
+
+  .about-heading {
+    margin-bottom: 55px;
+  }
+
+  .about-heading h2 {
+    font-size:
+      clamp(61px, 18vw, 90px);
+
+    line-height: 0.82;
+
+    letter-spacing: -2px;
+  }
+
+  .about-section-label {
+    font-size: 8px;
+
+    letter-spacing: 3px;
+  }
+
+  /* HİKAYE */
+
+  .about-cinematic-story {
+    display: block;
+
+    margin-bottom: 90px;
+  }
+
+  .about-cinematic-intro {
+    margin-bottom: 45px;
+  }
+
+  .about-cinematic-intro p {
+    font-size: 30px;
+  }
+
+  .about-main-photo {
+    width: 100%;
+    height: 520px;
+
+    margin-bottom: 50px;
+  }
+
+  .about-main-photo img {
+    left: -15%;
+
+    width: 130%;
+  }
+
+  .about-cinematic-text {
+    columns: auto;
+
+    margin: 0;
+  }
+
+  .about-cinematic-text p {
+    font-size: 12px;
+
+    line-height: 1.8;
+  }
+
+  /* ALINTI */
+
+  .about-cinematic-quote {
+    width: 100%;
+
+    margin-bottom: 90px;
+  }
+
+  .about-cinematic-quote p {
+    font-size: 27px;
+  }
+
+  .about-cinematic-quote br {
+    display: none;
+  }
+
+  /* YOLCULUK */
+
+  .cinematic-journey {
+    width: 100vw;
+
+    margin-left:
+      calc(50% - 50vw);
+  }
+
+  .cinematic-journey
+  .journey-title {
+    width: 88%;
+
+    margin-bottom: 25px;
+  }
+
+  .journey-visual {
+    min-height: auto;
+
+    overflow: visible;
+  }
+
+  .journey-images {
+    position: relative;
+
+    display: block;
+  }
+
+  .journey-image {
+    height: 340px;
+  }
+
+  .journey-image img {
+    position: absolute;
+
+    filter:
+      brightness(0.52)
+      saturate(0.78);
+  }
+
+  .journey-image-shade {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 5, 5, 0.1),
+        rgba(5, 5, 5, 0.28) 45%,
+        #050505 100%
+      );
+  }
+
+  .journey-route {
+    display: none;
+  }
+
+  .journey-cards {
+    position: absolute;
+
+    inset: 0;
+
+    display: block;
+
+    pointer-events: none;
+  }
+
+  .journey-card {
+    height: 340px;
+
+    padding:
+      185px 7%
+      25px;
+  }
+
+  .journey-card-number {
+    position: static;
+
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 8px;
+  }
+
+  .journey-card-dot {
+    display: none;
+  }
+
+  .journey-card h3 {
+    font-size: 10px;
+  }
+
+  .journey-card h4 {
+    max-width: 100%;
+
+    font-size: 25px;
+  }
+
+  .journey-card h5 {
+    font-size: 8px;
+  }
+
+  .journey-card p {
+    max-width: 100%;
+
+    font-size: 9px;
+  }
+}
+
+/* ==================================================
+   KÜÇÜK TELEFON
+================================================== */
+
+@media (max-width: 420px) {
+
+  .about-heading h2 {
+    font-size: 58px;
+  }
+
+  .about-main-photo {
+    height: 460px;
+  }
+
+  .about-cinematic-intro p {
+    font-size: 27px;
+  }
+
+  .journey-image,
+  .journey-card {
+    height: 320px;
+  }
+
+  .journey-card {
+    padding-top: 165px;
+  }
+}
+/* ==================================================
+   ABOUT — DESKTOP TYPOGRAPHY BOOST
+================================================== */
+
+@media (min-width: 769px) {
+
+  /* Sağdaki hikâye */
+  .about-cinematic-text p {
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  /* Yolculuk başlığı */
+  .cinematic-journey .journey-title {
+    font-size: 11px;
+  }
+
+  /* 01 / 02 / 03 / 04 */
+  .journey-card-number {
+    font-size: 10px;
+  }
+
+  /* BAŞLANGIÇ / ANTALYA / İSTANBUL / BARBAROS */
+  .journey-card h3 {
+    font-size: 13px;
+    letter-spacing: 3px;
+  }
+
+  /* 14 Yaşında / Alanya / şehirler */
+  .journey-card h4 {
+    font-size: clamp(23px, 1.6vw, 30px);
+    line-height: 1.05;
+  }
+
+  /* Hatay • Hassa • Aktepe / Akdeniz / tarih */
+  .journey-card h5 {
+    font-size: 10px;
+  }
+
+  /* Açıklamalar */
+  .journey-card p {
+    max-width: 260px;
+    font-size: 11px;
+    line-height: 1.65;
+  }
+}
+/* ==================================================
+   03 — HİZMETLER
+================================================== */
+
+.services {
+  position: relative;
+  width: 100%;
+  padding: 140px 0 0;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(183, 145, 82, 0.08),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      #070707 0%,
+      #0b0907 50%,
+      #050505 100%
+    );
+  color: #f4efe6;
+}
+
+.services-grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+}
+
+.services-glow {
+  position: absolute;
+  top: 100px;
+  right: -250px;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: rgba(183, 145, 82, 0.08);
+  filter: blur(170px);
+  pointer-events: none;
+}
+
+.services-container {
+  position: relative;
+  z-index: 3;
+  width: min(1380px, 88%);
+  margin: 0 auto;
+}
+
+/* ---------- HEADER ---------- */
+
+.services-header {
+  margin-bottom: 100px;
+}
+
+.services-label {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  margin-bottom: 25px;
+
+  color: #c5a66a;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+}
+
+.services-label div {
+  width: 50px;
+  height: 1px;
+  background: rgba(197, 166, 106, 0.6);
+}
+
+.services-heading-row {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
+  gap: 80px;
+  align-items: end;
+}
+
+.services-heading-row h2 {
+  margin: 0;
+
+  color: #f3eee5;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(75px, 8.5vw, 145px);
+  font-weight: 500;
+
+  line-height: 0.77;
+  letter-spacing: -3px;
+}
+
+.services-heading-row h2 em {
+  color: #b99052;
+  font-weight: 400;
+}
+
+.services-heading-row > p {
+  max-width: 420px;
+  margin: 0 0 8px;
+
+  color: #8e8981;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+
+  line-height: 1.9;
+}
+
+/* ---------- İÇERİK ---------- */
+
+.services-content {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 85px;
+  align-items: start;
+}
+
+.services-side {
+  position: sticky;
+  top: 120px;
+
+  padding-top: 25px;
+}
+
+.services-side svg {
+  margin-bottom: 35px;
+  color: #c5a66a;
+}
+
+.services-side p {
+  margin: 0 0 35px;
+
+  color: #ddd6ca;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 29px;
+
+  line-height: 1.35;
+}
+
+.services-side strong {
+  color: #c5a66a;
+  font-weight: 500;
+}
+
+.services-side > span {
+  color: #716b61;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+
+  letter-spacing: 3px;
+}
+
+/* ==================================================
+   HİZMET SATIRLARI
+================================================== */
+
+.services-list {
+  border-top: 1px solid rgba(197, 166, 106, 0.22);
+}
+
+.service-item {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    55px
+    minmax(0, 1fr)
+    145px
+    55px;
+
+  gap: 20px;
+  align-items: center;
+
+  min-height: 155px;
+
+  padding: 25px 10px;
+
+  border-bottom:
+    1px solid rgba(197, 166, 106, 0.17);
+
+  overflow: hidden;
+
+  transition:
+    padding 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease;
+}
+
+/* hover arka plan */
+
+.service-item::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(197,166,106,0.09),
+      rgba(197,166,106,0.025),
+      transparent
+    );
+
+  transform: scaleX(0);
+  transform-origin: left;
+
+  transition:
+    transform 0.55s
+    cubic-bezier(0.16, 1, 0.3, 1);
+
+  pointer-events: none;
+}
+
+.service-item:hover::before {
+  transform: scaleX(1);
+}
+
+.service-item:hover {
+  padding-left: 25px;
+  border-color: rgba(197, 166, 106, 0.5);
+}
+
+/* 01 / 02 */
+
+.service-number {
+  position: relative;
+  z-index: 2;
+
+  color: #665f54;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 16px;
+
+  transition: color 0.4s ease;
+}
+
+.service-item:hover .service-number {
+  color: #c5a66a;
+}
+
+/* hizmet */
+
+.service-main {
+  position: relative;
+  z-index: 2;
+}
+
+.service-subtitle {
+  display: block;
+  margin-bottom: 8px;
+
+  color: #827b70;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 8px;
+  font-weight: 500;
+
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.service-main h3 {
+  margin: 0;
+
+  color: #eee8dd;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(32px, 3vw, 52px);
+  font-weight: 500;
+
+  line-height: 0.95;
+
+  transition:
+    color 0.4s ease,
+    transform 0.45s ease;
+}
+
+.service-item:hover .service-main h3 {
+  color: #c9a867;
+  transform: translateX(5px);
+}
+
+.service-main p {
+  max-width: 520px;
+
+  margin: 13px 0 0;
+
+  color: #777168;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+
+  line-height: 1.7;
+}
+
+/* ---------- FİYAT ---------- */
+
+.service-price {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+
+  gap: 5px;
+
+  color: #c5a66a;
+
+  white-space: nowrap;
+}
+
+.service-price strong {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 48px;
+  font-weight: 500;
+
+  line-height: 1;
+}
+
+.service-price span {
+  margin-top: 5px;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+}
+
+/* ---------- OK ---------- */
+
+.service-arrow {
+  position: relative;
+  z-index: 2;
+
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid rgba(197, 166, 106, 0.2);
+
+  border-radius: 50%;
+
+  color: #81735b;
+
+  transition:
+    color 0.4s ease,
+    background 0.4s ease,
+    border-color 0.4s ease,
+    transform 0.45s
+    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.service-item:hover .service-arrow {
+  color: #090806;
+  background: #c5a66a;
+  border-color: #c5a66a;
+
+  transform:
+    rotate(45deg)
+    scale(1.08);
+}
+
+/* ==================================================
+   ALT HAREKETLİ YAZI
+================================================== */
+
+.services-marquee {
+  width: 100%;
+
+  margin-top: 120px;
+
+  padding: 25px 0;
+
+  overflow: hidden;
+
+  border-top:
+    1px solid rgba(197, 166, 106, 0.14);
+
+  border-bottom:
+    1px solid rgba(197, 166, 106, 0.14);
+}
+
+.services-marquee > div {
+  width: max-content;
+
+  color: rgba(197, 166, 106, 0.18);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(40px, 5vw, 80px);
+  font-style: italic;
+
+  white-space: nowrap;
+
+  letter-spacing: 5px;
+}
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 1000px) {
+
+  .services-heading-row {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .services-content {
+    grid-template-columns: 1fr;
+    gap: 55px;
+  }
+
+  .services-side {
+    position: relative;
+    top: auto;
+  }
+
+  .services-side p br {
+    display: none;
+  }
+}
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 768px) {
+
+  .services {
+    padding-top: 95px;
+  }
+
+  .services-container {
+    width: 88%;
+  }
+
+  .services-header {
+    margin-bottom: 65px;
+  }
+
+  .services-heading-row h2 {
+    font-size: clamp(60px, 17vw, 90px);
+    line-height: 0.82;
+  }
+
+  .services-heading-row > p {
+    font-size: 11px;
+  }
+
+  .services-side {
+    margin-bottom: 15px;
+  }
+
+  .services-side p {
+    font-size: 26px;
+  }
+
+  .service-item {
+    grid-template-columns:
+      32px
+      minmax(0, 1fr)
+      auto;
+
+    gap: 10px;
+
+    min-height: 135px;
+
+    padding: 25px 0;
+  }
+
+  .service-main h3 {
+    font-size: 30px;
+  }
+
+  .service-main p {
+    max-width: 95%;
+
+    font-size: 9px;
+  }
+
+  .service-price {
+    align-self: start;
+
+    padding-top: 27px;
+  }
+
+  .service-price strong {
+    font-size: 31px;
+  }
+
+  .service-price span {
+    font-size: 10px;
+  }
+
+  .service-arrow {
+    display: none;
+  }
+
+  .service-item:hover {
+    padding-left: 0;
+  }
+
+  .services-marquee {
+    margin-top: 75px;
+  }
+}
+/* ==================================================
+   04 — EKİBİMİZ
+================================================== */
+
+.team {
+  position: relative;
+  width: 100%;
+  padding: 150px 0 130px;
+  overflow: hidden;
+
+  color: #f4efe6;
+
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(181, 139, 70, 0.08),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #050505 0%,
+      #0a0907 50%,
+      #050505 100%
+    );
+}
+
+.team-grid-bg {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.18;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,0.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+}
+
+.team-glow {
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(184, 142, 72, 0.08);
+
+  filter: blur(160px);
+
+  pointer-events: none;
+}
+
+.team-glow-left {
+  left: -250px;
+  top: 300px;
+}
+
+.team-glow-right {
+  right: -250px;
+  bottom: 100px;
+}
+
+.team-container {
+  position: relative;
+  z-index: 3;
+
+  width: min(1380px, 88%);
+
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.team-header {
+  margin-bottom: 90px;
+}
+
+.team-label {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 25px;
+
+  color: #c5a66a;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+}
+
+.team-label div {
+  width: 50px;
+  height: 1px;
+
+  background:
+    rgba(197,166,106,0.6);
+}
+
+.team-heading-row {
+  display: grid;
+
+  grid-template-columns:
+    1.4fr 0.6fr;
+
+  gap: 80px;
+
+  align-items: end;
+}
+
+.team-heading-row h2 {
+  margin: 0;
+
+  color: #f3eee5;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size:
+    clamp(70px, 8vw, 135px);
+
+  font-weight: 500;
+
+  line-height: 0.78;
+
+  letter-spacing: -3px;
+}
+
+.team-heading-row h2 em {
+  color: #b99052;
+
+  font-weight: 400;
+}
+
+.team-heading-row > p {
+  max-width: 400px;
+
+  margin: 0 0 8px;
+
+  color: #8d877e;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 12px;
+
+  line-height: 1.9;
+}
+
+/* ==================================================
+   İKİ USTA
+================================================== */
+
+.team-members {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 35px;
+}
+
+.team-member {
+  position: relative;
+}
+
+/* FOTOĞRAF ALANI */
+
+.team-photo {
+  position: relative;
+
+  height: 690px;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(197,166,106,0.14);
+
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      #252017,
+      #0b0a08 55%,
+      #050505 100%
+    );
+
+  transition:
+    border-color 0.5s ease,
+    transform 0.7s
+    cubic-bezier(0.16,1,0.3,1);
+}
+
+.team-member:hover .team-photo {
+  border-color:
+    rgba(197,166,106,0.45);
+
+  transform:
+    translateY(-7px);
+}
+
+.team-photo::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 18px;
+
+  z-index: 3;
+
+  border:
+    1px solid rgba(197,166,106,0.11);
+
+  pointer-events: none;
+}
+
+/* GEÇİCİ FOTOĞRAF */
+
+.team-photo-placeholder {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+
+  color:
+    rgba(197,166,106,0.45);
+}
+
+.team-photo-placeholder > span {
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size:
+    clamp(120px, 14vw, 220px);
+
+  font-weight: 500;
+
+  line-height: 0.7;
+
+  color:
+    rgba(197,166,106,0.06);
+
+  transition:
+    color 0.6s ease,
+    transform 0.8s
+    cubic-bezier(0.16,1,0.3,1);
+}
+
+.team-member:hover
+.team-photo-placeholder > span {
+  color:
+    rgba(197,166,106,0.11);
+
+  transform: scale(1.06);
+}
+
+.team-photo-placeholder svg {
+  color:
+    rgba(197,166,106,0.5);
+}
+
+.team-photo-placeholder small {
+  color: #686157;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  line-height: 1.7;
+
+  letter-spacing: 4px;
+
+  text-align: center;
+}
+
+.team-photo-gradient {
+  position: absolute;
+  inset: 0;
+
+  z-index: 2;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 35%,
+      rgba(5,5,5,0.15) 55%,
+      rgba(5,5,5,0.95) 100%
+    );
+
+  pointer-events: none;
+}
+
+/* 01 / 02 */
+
+.team-member-number {
+  position: absolute;
+
+  z-index: 5;
+
+  top: 38px;
+  left: 38px;
+
+  color: #c5a66a;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 16px;
+}
+
+/* FOTOĞRAF ÜZERİ İSİM */
+
+.team-photo-name {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 40px;
+  right: 40px;
+  bottom: 38px;
+}
+
+.team-photo-name > span {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #c5a66a;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 3px;
+}
+
+.team-photo-name h3 {
+  margin: 0;
+
+  color: #f2ede4;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size:
+    clamp(45px, 4.5vw, 76px);
+
+  font-weight: 500;
+
+  line-height: 0.9;
+
+  transition:
+    transform 0.5s ease;
+}
+
+.team-member:hover
+.team-photo-name h3 {
+  transform:
+    translateX(7px);
+}
+
+/* ==================================================
+   İSTATİSTİKLER
+================================================== */
+
+.team-member-info {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr auto;
+
+  align-items: center;
+
+  gap: 20px;
+
+  min-height: 120px;
+
+  padding:
+    22px 8px;
+
+  border-bottom:
+    1px solid rgba(197,166,106,0.18);
+}
+
+.team-stat {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+}
+
+.team-stat strong {
+  color: #c5a66a;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 47px;
+  font-weight: 500;
+
+  line-height: 1;
+}
+
+.team-stat span {
+  color: #817a70;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  line-height: 1.5;
+
+  letter-spacing: 2px;
+}
+
+.team-member-arrow {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid rgba(197,166,106,0.2);
+
+  border-radius: 50%;
+
+  color: #9a825a;
+
+  transition:
+    all 0.45s ease;
+}
+
+.team-member:hover
+.team-member-arrow {
+  color: #090806;
+
+  background: #c5a66a;
+
+  border-color: #c5a66a;
+
+  transform:
+    rotate(45deg);
+}
+
+/* SÖZ */
+
+.team-quote {
+  max-width: 500px;
+
+  margin:
+    27px 8px 0;
+
+  color: #777168;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 19px;
+
+  font-style: italic;
+
+  line-height: 1.55;
+}
+
+/* ==================================================
+   ALT İMZA
+================================================== */
+
+.team-footer {
+  display: flex;
+
+  align-items: center;
+
+  gap: 30px;
+
+  margin-top: 110px;
+}
+
+.team-footer > span {
+  color: #c5a66a;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+
+  white-space: nowrap;
+}
+
+.team-footer > div {
+  width: 100%;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(197,166,106,0.4),
+      transparent
+    );
+}
+
+.team-footer p {
+  min-width: 170px;
+
+  margin: 0;
+
+  color: #817a70;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 17px;
+
+  font-style: italic;
+
+  line-height: 1.35;
+}
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 1000px) {
+
+  .team-heading-row {
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+  }
+
+  .team-photo {
+    height: 580px;
+  }
+}
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 768px) {
+
+  .team {
+    padding:
+      95px 0
+      85px;
+  }
+
+  .team-container {
+    width: 88%;
+  }
+
+  .team-header {
+    margin-bottom: 60px;
+  }
+
+  .team-heading-row h2 {
+    font-size:
+      clamp(57px, 16vw, 85px);
+
+    line-height: 0.83;
+  }
+
+  .team-members {
+    display: block;
+  }
+
+  .team-member {
+    margin-bottom: 75px;
+  }
+
+  .team-photo {
+    height: 520px;
+  }
+
+  .team-photo-name {
+    left: 27px;
+    right: 27px;
+    bottom: 27px;
+  }
+
+  .team-photo-name h3 {
+    font-size: 46px;
+  }
+
+  .team-member-number {
+    top: 28px;
+    left: 28px;
+  }
+
+  .team-member-info {
+    grid-template-columns:
+      1fr 1fr auto;
+  }
+
+  .team-stat strong {
+    font-size: 38px;
+  }
+
+  .team-stat span {
+    font-size: 7px;
+  }
+
+  .team-quote {
+    font-size: 18px;
+  }
+
+  .team-footer {
+    margin-top: 40px;
+  }
+
+  .team-footer p {
+    display: none;
+  }
+}
+/* ==================================================
+   05 — GALERİ
+================================================== */
+
+.gallery {
+  position: relative;
+  width: 100%;
+  padding: 150px 0 130px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(183,145,82,.07),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      #050505 0%,
+      #090806 55%,
+      #040404 100%
+    );
+  color: #f4efe6;
+}
+
+.gallery-grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .18;
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+  background-size: 80px 80px;
+}
+
+.gallery-glow {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  left: -350px;
+  top: 400px;
+  border-radius: 50%;
+  background: rgba(183,145,82,.07);
+  filter: blur(170px);
+  pointer-events: none;
+}
+
+.gallery-container {
+  position: relative;
+  z-index: 3;
+  width: min(1380px, 88%);
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.gallery-header {
+  margin-bottom: 90px;
+}
+
+.gallery-label {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+
+  color: #c5a66a;
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 4px;
+}
+
+.gallery-label div {
+  width: 50px;
+  height: 1px;
+  background: rgba(197,166,106,.6);
+}
+
+.gallery-heading-row {
+  display: grid;
+  grid-template-columns: 1.4fr .6fr;
+  gap: 80px;
+  align-items: end;
+}
+
+.gallery-heading-row h2 {
+  margin: 0;
+  color: #f3eee5;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(65px, 7.5vw, 125px);
+  font-weight: 500;
+  line-height: .8;
+  letter-spacing: -3px;
+}
+
+.gallery-heading-row h2 em {
+  color: #b99052;
+  font-weight: 400;
+}
+
+.gallery-intro p {
+  max-width: 390px;
+  margin: 0 0 25px;
+  color: #8e8981;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.gallery-intro span {
+  color: #c5a66a;
+  font-family: "Montserrat", sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+/* ==================================================
+   EDITORIAL GRID
+================================================== */
+
+.gallery-layout {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: 120px;
+  gap: 20px;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(197,166,106,.14);
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      #272117,
+      #0c0b09 55%,
+      #050505 100%
+    );
+  cursor: pointer;
+
+  transition:
+    border-color .5s ease,
+    transform .7s cubic-bezier(.16,1,.3,1);
+}
+
+.gallery-item:hover {
+  border-color: rgba(197,166,106,.5);
+  transform: translateY(-5px);
+}
+
+.gallery-item::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  z-index: 3;
+  border: 1px solid rgba(197,166,106,.08);
+  pointer-events: none;
+}
+
+/* BOYUTLAR */
+
+.gallery-item-large {
+  grid-column: span 7;
+  grid-row: span 5;
+}
+
+.gallery-item-small {
+  grid-column: span 5;
+  grid-row: span 3;
+}
+
+.gallery-item-wide {
+  grid-column: span 7;
+  grid-row: span 4;
+}
+
+.gallery-item-medium {
+  grid-column: span 5;
+  grid-row: span 4;
+}
+
+/* PLACEHOLDER */
+
+.gallery-placeholder {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 15px;
+
+  color: rgba(197,166,106,.4);
+}
+
+.gallery-big-number {
+  position: absolute;
+
+  color: rgba(197,166,106,.045);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(150px, 18vw, 310px);
+  line-height: 1;
+
+  transition:
+    transform .9s cubic-bezier(.16,1,.3,1),
+    color .6s ease;
+}
+
+.gallery-item:hover .gallery-big-number {
+  transform: scale(1.08);
+  color: rgba(197,166,106,.08);
+}
+
+.gallery-placeholder svg {
+  position: relative;
+  z-index: 2;
+}
+
+.gallery-placeholder small {
+  position: relative;
+  z-index: 2;
+
+  color: #655f56;
+  font-family: "Montserrat", sans-serif;
+  font-size: 7px;
+  font-weight: 600;
+  line-height: 1.7;
+  letter-spacing: 4px;
+  text-align: center;
+}
+
+/* KARANLIK KATMAN */
+
+.gallery-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.05) 30%,
+      rgba(0,0,0,.2) 55%,
+      rgba(0,0,0,.93) 100%
+    );
+
+  pointer-events: none;
+}
+
+/* NUMARA */
+
+.gallery-number {
+  position: absolute;
+  z-index: 5;
+
+  top: 32px;
+  left: 32px;
+
+  color: #c5a66a;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 14px;
+}
+
+/* YAZI */
+
+.gallery-item-content {
+  position: absolute;
+  z-index: 5;
+
+  left: 35px;
+  bottom: 32px;
+
+  transition:
+    transform .55s cubic-bezier(.16,1,.3,1);
+}
+
+.gallery-item:hover .gallery-item-content {
+  transform: translateX(7px);
+}
+
+.gallery-item-content > span {
+  display: block;
+  margin-bottom: 7px;
+
+  color: #c5a66a;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+
+.gallery-item-content h3 {
+  margin: 0;
+
+  color: #f1ece3;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(35px, 4vw, 64px);
+  font-weight: 500;
+  line-height: .9;
+}
+
+/* OK */
+
+.gallery-arrow {
+  position: absolute;
+  z-index: 6;
+
+  right: 30px;
+  bottom: 30px;
+
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(197,166,106,.2);
+  border-radius: 50%;
+
+  color: #947e5a;
+
+  transition:
+    background .45s ease,
+    color .45s ease,
+    border-color .45s ease,
+    transform .45s ease;
+}
+
+.gallery-item:hover .gallery-arrow {
+  background: #c5a66a;
+  border-color: #c5a66a;
+  color: #090806;
+  transform: rotate(45deg);
+}
+
+/* ALT */
+
+.gallery-bottom {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+
+  margin-top: 70px;
+}
+
+.gallery-bottom p {
+  margin: 0;
+
+  color: #c5a66a;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
+  font-style: italic;
+
+  white-space: nowrap;
+}
+
+.gallery-bottom div {
+  width: 100%;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(197,166,106,.4),
+      transparent
+    );
+}
+
+.gallery-bottom span {
+  color: #716b61;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 3px;
+
+  white-space: nowrap;
+}
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 1000px) {
+  .gallery-heading-row {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .gallery-layout {
+    grid-auto-rows: 100px;
+  }
+}
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 768px) {
+  .gallery {
+    padding: 95px 0 85px;
+  }
+
+  .gallery-container {
+    width: 88%;
+  }
+
+  .gallery-header {
+    margin-bottom: 60px;
+  }
+
+  .gallery-heading-row h2 {
+    font-size: clamp(55px, 15vw, 82px);
+    line-height: .83;
+  }
+
+  .gallery-layout {
+    display: block;
+  }
+
+  .gallery-item {
+    width: 100%;
+    height: 440px;
+    margin-bottom: 18px;
+  }
+
+  .gallery-item-small {
+    height: 350px;
+  }
+
+  .gallery-item-content {
+    left: 25px;
+    bottom: 25px;
+  }
+
+  .gallery-item-content h3 {
+    font-size: 42px;
+  }
+
+  .gallery-number {
+    top: 27px;
+    left: 27px;
+  }
+
+  .gallery-arrow {
+    right: 25px;
+    bottom: 25px;
+  }
+
+  .gallery-bottom {
+    margin-top: 45px;
+  }
+
+  .gallery-bottom p {
+    font-size: 14px;
+  }
+
+  .gallery-bottom span {
+    display: none;
+  }
+}
+/* GALERİ GÖRSELLERİ */
+
+.gallery-image-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.gallery-real-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  filter:
+    brightness(.72)
+    contrast(1.08)
+    saturate(.82);
+
+  transition:
+    transform 1.2s cubic-bezier(.16, 1, .3, 1),
+    filter .7s ease;
+}
+
+.gallery-item:hover .gallery-real-image {
+  transform: scale(1.06);
+
+  filter:
+    brightness(.9)
+    contrast(1.05)
+    saturate(.95);
+}
+
+/* Büyük görselin farklı bölgelerini göster */
+
+.gallery-image-1 {
+  object-position: 18% 22%;
+}
+
+.gallery-image-2 {
+  object-position: 82% 16%;
+}
+
+.gallery-image-3 {
+  object-position: 82% 48%;
+}
+
+.gallery-image-4 {
+  object-position: 18% 88%;
+}
+
+.gallery-image-5 {
+  object-position: 82% 88%;
+}
+/* ==================================================
+   GALERİ — 5 AYRI GÖRSEL SON AYAR
+================================================== */
+
+.gallery-image-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.gallery-real-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  filter:
+    brightness(.67)
+    contrast(1.08)
+    saturate(.88);
+
+  transform: scale(1.01);
+
+  transition:
+    transform 1.1s cubic-bezier(.16, 1, .3, 1),
+    filter .7s ease;
+}
+
+.gallery-item:hover .gallery-real-image {
+  transform: scale(1.075);
+
+  filter:
+    brightness(.86)
+    contrast(1.05)
+    saturate(1);
+}
+
+.gallery-shade {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, .08) 0%,
+      rgba(0, 0, 0, .04) 40%,
+      rgba(0, 0, 0, .82) 100%
+    );
+}
+/* ==================================================
+   07 — MÜŞTERİ YORUMLARI
+================================================== */
+
+.reviews {
+  position: relative;
+  width: 100%;
+  padding: 150px 0 120px;
+  overflow: hidden;
+
+  color: #f4efe6;
+
+  background:
+    radial-gradient(
+      circle at 75% 35%,
+      rgba(183, 145, 82, .08),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #040404 0%,
+      #0a0806 55%,
+      #050505 100%
+    );
+}
+
+.reviews-grid-bg {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+  opacity: .18;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+}
+
+.reviews-glow {
+  position: absolute;
+
+  top: 250px;
+  right: -300px;
+
+  width: 700px;
+  height: 700px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(183,145,82,.07);
+
+  filter: blur(180px);
+
+  pointer-events: none;
+}
+
+.reviews-container {
+  position: relative;
+  z-index: 3;
+
+  width: min(1380px, 88%);
+
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.reviews-header {
+  margin-bottom: 90px;
+}
+
+.reviews-label {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 25px;
+
+  color: #c5a66a;
+
+  font-family: "Montserrat", sans-serif;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+}
+
+.reviews-label div {
+  width: 50px;
+  height: 1px;
+
+  background:
+    rgba(197,166,106,.6);
+}
+
+.reviews-heading-row {
+  display: grid;
+
+  grid-template-columns:
+    1.4fr .6fr;
+
+  gap: 80px;
+
+  align-items: end;
+}
+
+.reviews-heading-row h2 {
+  margin: 0;
+
+  color: #f3eee5;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size:
+    clamp(65px, 7.5vw, 125px);
+
+  font-weight: 500;
+
+  line-height: .8;
+
+  letter-spacing: -3px;
+}
+
+.reviews-heading-row h2 em {
+  color: #b99052;
+
+  font-weight: 400;
+}
+
+.reviews-stars {
+  display: flex;
+
+  gap: 6px;
+
+  margin-bottom: 20px;
+
+  color: #c5a66a;
+}
+
+.reviews-intro p {
+  max-width: 390px;
+
+  margin: 0;
+
+  color: #8e8981;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 12px;
+
+  line-height: 1.9;
+}
+
+/* ==================================================
+   YORUM KARTLARI
+================================================== */
+
+.reviews-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+.review-card {
+  position: relative;
+
+  min-height: 430px;
+
+  padding: 38px;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(197,166,106,.16);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.025),
+      rgba(197,166,106,.025)
+    );
+
+  transition:
+    transform .6s cubic-bezier(.16,1,.3,1),
+    border-color .5s ease,
+    background .5s ease;
+}
+
+.review-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(197,166,106,.11),
+      transparent 35%
+    );
+
+  opacity: 0;
+
+  transition:
+    opacity .5s ease;
+
+  pointer-events: none;
+}
+
+.review-card:hover {
+  transform:
+    translateY(-9px);
+
+  border-color:
+    rgba(197,166,106,.45);
+
+  background:
+    rgba(197,166,106,.035);
+}
+
+.review-card:hover::before {
+  opacity: 1;
+}
+
+.review-top {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 50px;
+}
+
+.review-top > span {
+  color: #6e665b;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 16px;
+}
+
+.review-top svg {
+  color:
+    rgba(197,166,106,.45);
+}
+
+.review-card-stars {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  gap: 5px;
+
+  margin-bottom: 23px;
+
+  color: #c5a66a;
+}
+
+.review-placeholder-text {
+  position: relative;
+  z-index: 2;
+
+  margin: 0;
+
+  color: #d9d2c7;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size:
+    clamp(30px, 2.6vw, 43px);
+
+  font-weight: 500;
+
+  line-height: 1.05;
+}
+
+.review-divider {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  height: 1px;
+
+  margin:
+    50px 0 25px;
+
+  background:
+    rgba(197,166,106,.16);
+}
+
+.review-person {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+.review-avatar {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border:
+    1px solid rgba(197,166,106,.25);
+
+  border-radius: 50%;
+
+  color: #c5a66a;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 22px;
+}
+
+.review-person > div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.review-person strong {
+  color: #c8c1b6;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 2px;
+}
+
+.review-person span {
+  color: #686158;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 7px;
+
+  letter-spacing: 2px;
+}
+
+/* ALT İMZA */
+
+.reviews-signature {
+  display: grid;
+
+  grid-template-columns:
+    auto 1fr auto;
+
+  align-items: center;
+
+  gap: 40px;
+
+  margin-top: 90px;
+
+  padding-top: 30px;
+
+  border-top:
+    1px solid rgba(197,166,106,.14);
+}
+
+.reviews-signature > span {
+  color: #7d756a;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  letter-spacing: 3px;
+}
+
+.reviews-signature p {
+  margin: 0;
+
+  text-align: center;
+
+  color: #8d867c;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 20px;
+
+  font-style: italic;
+}
+
+.reviews-signature p em {
+  color: #c5a66a;
+}
+
+/* TABLET */
+
+@media (max-width: 1000px) {
+
+  .reviews-heading-row {
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+  }
+
+  .reviews-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .review-card:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .reviews {
+    padding:
+      95px 0 80px;
+  }
+
+  .reviews-container {
+    width: 88%;
+  }
+
+  .reviews-header {
+    margin-bottom: 60px;
+  }
+
+  .reviews-heading-row h2 {
+    font-size:
+      clamp(55px, 15vw, 82px);
+
+    line-height: .83;
+  }
+
+  .reviews-list {
+    display: block;
+  }
+
+  .review-card {
+    min-height: 360px;
+
+    margin-bottom: 16px;
+
+    padding: 28px;
+  }
+
+  .review-top {
+    margin-bottom: 35px;
+  }
+
+  .review-divider {
+    margin:
+      40px 0 23px;
+  }
+
+  .reviews-signature {
+    grid-template-columns: 1fr;
+
+    gap: 18px;
+
+    margin-top: 60px;
+
+    text-align: center;
+  }
+
+  .reviews-signature p {
+    order: -1;
+
+    font-size: 18px;
+  }
+}
+/* ==================================================
+   08 — RANDEVU
+================================================== */
+
+.booking {
+  position: relative;
+  width: 100%;
+  padding: 150px 0 140px;
+  overflow: hidden;
+  color: #f4efe6;
+
+  background:
+    radial-gradient(
+      circle at 15% 45%,
+      rgba(183,145,82,.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #050505 0%,
+      #0b0907 50%,
+      #040404 100%
+    );
+}
+
+.booking-grid-bg {
+  position: absolute;
+  inset: 0;
+  opacity: .18;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+}
+
+.booking-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: rgba(183,145,82,.07);
+  filter: blur(170px);
+  pointer-events: none;
+}
+
+.booking-glow-left {
+  left: -300px;
+  top: 300px;
+}
+
+.booking-glow-right {
+  right: -300px;
+  bottom: 50px;
+}
+
+.booking-container {
+  position: relative;
+  z-index: 3;
+
+  width: min(1380px, 88%);
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.booking-header {
+  margin-bottom: 90px;
+}
+
+.booking-label {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  margin-bottom: 25px;
+
+  color: #c5a66a;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 4px;
+}
+
+.booking-label div {
+  width: 50px;
+  height: 1px;
+
+  background:
+    rgba(197,166,106,.6);
+}
+
+.booking-heading-row {
+  display: grid;
+  grid-template-columns: 1.4fr .6fr;
+  gap: 80px;
+  align-items: end;
+}
+
+.booking-heading-row h2 {
+  margin: 0;
+
+  color: #f3eee5;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size:
+    clamp(70px, 8vw, 135px);
+
+  font-weight: 500;
+
+  line-height: .78;
+  letter-spacing: -3px;
+}
+
+.booking-heading-row h2 em {
+  color: #b99052;
+  font-weight: 400;
+}
+
+.booking-heading-row > p {
+  max-width: 400px;
+  margin: 0 0 8px;
+
+  color: #8e8981;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+/* ANA YAPI */
+
+.booking-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.25fr)
+    minmax(330px, .75fr);
+
+  gap: 25px;
+  align-items: stretch;
+}
+
+/* FORM */
+
+.booking-form,
+.booking-summary {
+  border:
+    1px solid rgba(197,166,106,.17);
+
+  background:
+    rgba(255,255,255,.018);
+}
+
+.booking-form {
+  padding: 45px;
+}
+
+.booking-form-heading {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 20px;
+
+  margin-bottom: 45px;
+  padding-bottom: 25px;
+
+  border-bottom:
+    1px solid rgba(197,166,106,.15);
+}
+
+.booking-form-heading > span {
+  color: #c5a66a;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 17px;
+}
+
+.booking-form-heading h3 {
+  margin: 0 0 6px;
+
+  color: #e9e3d9;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+.booking-form-heading p {
+  margin: 0;
+
+  color: #716b62;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 9px;
+}
+
+/* INPUT */
+
+.booking-field {
+  margin-bottom: 28px;
+}
+
+.booking-field label {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 11px;
+
+  color: #a38a60;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+}
+
+.booking-field input,
+.booking-field select {
+  width: 100%;
+  height: 58px;
+
+  padding: 0 17px;
+
+  border:
+    1px solid rgba(197,166,106,.18);
+
+  border-radius: 0;
+  outline: none;
+
+  color: #e7e1d7;
+  background: #0c0b09;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 11px;
+
+  transition:
+    border-color .35s ease,
+    background .35s ease;
+}
+
+.booking-field input:focus,
+.booking-field select:focus {
+  border-color:
+    rgba(197,166,106,.7);
+
+  background: #100e0b;
+}
+
+.booking-field input::placeholder {
+  color: #5f5a52;
+}
+
+.booking-field select {
+  cursor: pointer;
+}
+
+.booking-field select option {
+  color: #eee8de;
+  background: #0b0a08;
+}
+
+.booking-double {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+/* BUTON */
+
+.booking-submit {
+  width: 100%;
+  height: 65px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 8px;
+  padding: 0 25px;
+
+  border: 1px solid #c5a66a;
+
+  color: #090806;
+  background: #c5a66a;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+
+  cursor: pointer;
+
+  transition:
+    background .4s ease,
+    color .4s ease,
+    transform .4s ease;
+}
+
+.booking-submit:hover {
+  color: #c5a66a;
+  background: transparent;
+
+  transform: translateY(-3px);
+}
+
+/* ÖZET */
+
+.booking-summary {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 45px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(197,166,106,.08),
+      transparent 40%
+    ),
+    rgba(255,255,255,.015);
+}
+
+.booking-summary::before {
+  content: "";
+
+  position: absolute;
+  inset: 15px;
+
+  border:
+    1px solid rgba(197,166,106,.07);
+
+  pointer-events: none;
+}
+
+.booking-summary-top {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #8d7753;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 8px;
+  letter-spacing: 2.5px;
+}
+
+.booking-summary-top p {
+  margin: 0;
+}
+
+.booking-summary-brand {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  margin: 60px 0 55px;
+
+  color: #c5a66a;
+}
+
+.booking-summary-brand svg {
+  margin-bottom: 17px;
+}
+
+.booking-summary-brand > span {
+  color: #eee8dd;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 46px;
+  line-height: .9;
+
+  letter-spacing: 2px;
+}
+
+.booking-summary-brand small {
+  margin-top: 10px;
+
+  color: #81796e;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 7px;
+  letter-spacing: 4px;
+}
+
+/* ÖZET SATIRLARI */
+
+.booking-summary-list {
+  position: relative;
+  z-index: 2;
+
+  border-top:
+    1px solid rgba(197,166,106,.15);
+}
+
+.booking-summary-list > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 17px 0;
+
+  border-bottom:
+    1px solid rgba(197,166,106,.12);
+}
+
+.booking-summary-list span {
+  color: #6e675e;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.booking-summary-list strong {
+  color: #d6d0c5;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 9px;
+  font-weight: 500;
+
+  text-align: right;
+}
+
+/* FİYAT */
+
+.booking-price {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-top: 35px;
+}
+
+.booking-price > span {
+  color: #80786d;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.booking-price > div {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 5px;
+
+  color: #c5a66a;
+}
+
+.booking-price strong {
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 60px;
+  font-weight: 500;
+  line-height: .8;
+}
+
+.booking-price div span {
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 12px;
+}
+
+.booking-note {
+  position: relative;
+  z-index: 2;
+
+  margin: auto 0 0;
+  padding-top: 45px;
+
+  color: #625d55;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 8px;
+  line-height: 1.8;
+}
+
+/* TABLET */
+
+@media (max-width: 1000px) {
+  .booking-heading-row {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-summary {
+    min-height: 600px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .booking {
+    padding: 95px 0 85px;
+  }
+
+  .booking-container {
+    width: 88%;
+  }
+
+  .booking-header {
+    margin-bottom: 60px;
+  }
+
+  .booking-heading-row h2 {
+    font-size:
+      clamp(58px, 16vw, 85px);
+
+    line-height: .82;
+  }
+
+  .booking-form,
+  .booking-summary {
+    padding: 28px 22px;
+  }
+
+  .booking-double {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .booking-summary {
+    min-height: 570px;
+  }
+
+  .booking-summary-brand {
+    margin: 50px 0 45px;
+  }
+
+  .booking-summary-brand > span {
+    font-size: 40px;
+  }
+
+  .booking-price strong {
+    font-size: 50px;
+  }
+}
+/* ==================================================
+   09 — İLETİŞİM & FOOTER
+================================================== */
+
+.contact {
+  position: relative;
+  width: 100%;
+  padding: 150px 0 35px;
+  overflow: hidden;
+
+  color: #f4efe6;
+
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      rgba(183,145,82,.08),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      #040404 0%,
+      #0a0806 50%,
+      #030303 100%
+    );
+}
+
+.contact-grid-bg {
+  position: absolute;
+  inset: 0;
+
+  opacity: .18;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 80px 80px;
+}
+
+.contact-glow {
+  position: absolute;
+
+  width: 800px;
+  height: 800px;
+
+  left: 50%;
+  top: 450px;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background:
+    rgba(183,145,82,.07);
+
+  filter: blur(190px);
+
+  pointer-events: none;
+}
+
+.contact-container {
+  position: relative;
+  z-index: 3;
+
+  width: min(1380px, 88%);
+
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.contact-header {
+  margin-bottom: 90px;
+}
+
+.contact-label {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 25px;
+
+  color: #c5a66a;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+}
+
+.contact-label div {
+  width: 50px;
+  height: 1px;
+
+  background:
+    rgba(197,166,106,.6);
+}
+
+.contact-heading-row {
+  display: grid;
+
+  grid-template-columns:
+    1.4fr .6fr;
+
+  gap: 80px;
+
+  align-items: end;
+}
+
+.contact-heading-row h2 {
+  margin: 0;
+
+  color: #f3eee5;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size:
+    clamp(70px, 8vw, 135px);
+
+  font-weight: 500;
+
+  line-height: .78;
+
+  letter-spacing: -3px;
+}
+
+.contact-heading-row h2 em {
+  color: #b99052;
+
+  font-weight: 400;
+}
+
+.contact-heading-row > p {
+  max-width: 400px;
+
+  margin: 0 0 8px;
+
+  color: #8e8981;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 12px;
+
+  line-height: 1.9;
+}
+
+/* ==================================================
+   İLETİŞİM KARTLARI
+================================================== */
+
+.contact-cards {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  border-top:
+    1px solid rgba(197,166,106,.17);
+
+  border-left:
+    1px solid rgba(197,166,106,.17);
+}
+
+.contact-card {
+  position: relative;
+
+  min-height: 410px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 32px;
+
+  overflow: hidden;
+
+  color: inherit;
+
+  text-decoration: none;
+
+  border-right:
+    1px solid rgba(197,166,106,.17);
+
+  border-bottom:
+    1px solid rgba(197,166,106,.17);
+
+  background:
+    rgba(255,255,255,.012);
+
+  transition:
+    background .5s ease,
+    transform .5s ease;
+}
+
+.contact-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(197,166,106,.13),
+      transparent 40%
+    );
+
+  opacity: 0;
+
+  transition:
+    opacity .5s ease;
+
+  pointer-events: none;
+}
+
+a.contact-card:hover {
+  background:
+    rgba(197,166,106,.035);
+
+  transform:
+    translateY(-5px);
+}
+
+.contact-card:hover::before {
+  opacity: 1;
+}
+
+.contact-card-top {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  color: #806f53;
+}
+
+.contact-card-top > span {
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 15px;
+}
+
+.contact-card-content {
+  position: relative;
+  z-index: 2;
+
+  margin-top: auto;
+
+  padding-bottom: 30px;
+}
+
+.contact-card-content > span {
+  display: block;
+
+  margin-bottom: 13px;
+
+  color: #c5a66a;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  letter-spacing: 3px;
+}
+
+.contact-card-content h3 {
+  margin: 0 0 20px;
+
+  color: #eee8de;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size:
+    clamp(34px, 3vw, 48px);
+
+  font-weight: 500;
+
+  line-height: .95;
+
+  overflow-wrap: anywhere;
+}
+
+.contact-card-content p {
+  margin: 0;
+
+  color: #777168;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 9px;
+
+  line-height: 1.8;
+}
+
+.contact-card-arrow {
+  position: absolute;
+
+  z-index: 3;
+
+  right: 28px;
+  bottom: 28px;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid rgba(197,166,106,.2);
+
+  border-radius: 50%;
+
+  color: #8f7955;
+
+  transition:
+    all .45s ease;
+}
+
+.contact-card:hover
+.contact-card-arrow {
+  color: #090806;
+
+  background: #c5a66a;
+
+  border-color: #c5a66a;
+
+  transform:
+    rotate(45deg);
+}
+
+/* ==================================================
+   BÜYÜK CTA
+================================================== */
+
+.contact-cta {
+  position: relative;
+
+  margin-top: 130px;
+
+  padding: 100px 30px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+
+  border-top:
+    1px solid rgba(197,166,106,.15);
+
+  border-bottom:
+    1px solid rgba(197,166,106,.15);
+}
+
+.contact-cta-icon {
+  width: 65px;
+  height: 65px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 35px;
+
+  border:
+    1px solid rgba(197,166,106,.3);
+
+  border-radius: 50%;
+
+  color: #c5a66a;
+}
+
+.contact-cta > span {
+  margin-bottom: 25px;
+
+  color: #847b6f;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+}
+
+.contact-cta h3 {
+  margin: 0;
+
+  color: #f0ebe2;
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size:
+    clamp(65px, 8vw, 130px);
+
+  font-weight: 500;
+
+  line-height: .8;
+
+  letter-spacing: -3px;
+}
+
+.contact-cta h3 em {
+  color: #b99052;
+
+  font-weight: 400;
+}
+
+.contact-cta > a {
+  min-width: 270px;
+
+  height: 62px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-top: 50px;
+
+  padding: 0 25px;
+
+  color: #090806;
+
+  background: #c5a66a;
+
+  border:
+    1px solid #c5a66a;
+
+  text-decoration: none;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 2.5px;
+
+  transition:
+    background .4s ease,
+    color .4s ease,
+    transform .4s ease;
+}
+
+.contact-cta > a:hover {
+  color: #c5a66a;
+
+  background: transparent;
+
+  transform:
+    translateY(-4px);
+}
+
+/* ==================================================
+   DEV BARBAROS
+================================================== */
+
+.contact-big-brand {
+  width: 100%;
+
+  padding: 90px 0 45px;
+
+  overflow: hidden;
+}
+
+.contact-big-brand h2 {
+  margin: 0;
+
+  color:
+    rgba(197,166,106,.11);
+
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size:
+    clamp(100px, 17vw, 290px);
+
+  font-weight: 500;
+
+  line-height: .7;
+
+  letter-spacing: -8px;
+
+  text-align: center;
+
+  white-space: nowrap;
+
+  user-select: none;
+}
+
+/* ==================================================
+   FOOTER
+================================================== */
+
+.contact-footer {
+  min-height: 85px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr auto 1fr;
+
+  align-items: center;
+
+  gap: 30px;
+
+  border-top:
+    1px solid rgba(197,166,106,.13);
+}
+
+.contact-footer-brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  color: #c5a66a;
+}
+
+.contact-footer-brand span {
+  font-family:
+    "Cormorant Garamond", serif;
+
+  font-size: 17px;
+
+  letter-spacing: 2px;
+}
+
+.contact-footer p {
+  margin: 0;
+
+  color: #686158;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 7px;
+
+  letter-spacing: 3px;
+}
+
+.contact-footer > a {
+  justify-self: end;
+
+  color: #8f826d;
+
+  font-family:
+    "Montserrat", sans-serif;
+
+  font-size: 8px;
+
+  letter-spacing: 2px;
+
+  text-decoration: none;
+
+  transition:
+    color .3s ease;
+}
+
+.contact-footer > a:hover {
+  color: #c5a66a;
+}
+
+/* ==================================================
+   TABLET
+================================================== */
+
+@media (max-width: 1050px) {
+
+  .contact-heading-row {
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+  }
+
+  .contact-cards {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 768px) {
+
+  .contact {
+    padding:
+      95px 0 25px;
+  }
+
+  .contact-container {
+    width: 88%;
+  }
+
+  .contact-header {
+    margin-bottom: 60px;
+  }
+
+  .contact-heading-row h2 {
+    font-size:
+      clamp(58px, 16vw, 85px);
+
+    line-height: .82;
+  }
+
+  .contact-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-card {
+    min-height: 330px;
+
+    padding: 27px;
+  }
+
+  .contact-card-content h3 {
+    font-size: 40px;
+  }
+
+  .contact-cta {
+    margin-top: 80px;
+
+    padding:
+      80px 0;
+  }
+
+  .contact-cta h3 {
+    font-size:
+      clamp(55px, 16vw, 85px);
+
+    line-height: .82;
+  }
+
+  .contact-cta > a {
+    width: 100%;
+
+    min-width: 0;
+  }
+
+  .contact-big-brand {
+    padding:
+      70px 0 40px;
+  }
+
+  .contact-big-brand h2 {
+    font-size: 22vw;
+
+    letter-spacing: -4px;
+  }
+
+  .contact-footer {
+    grid-template-columns: 1fr;
+
+    gap: 17px;
+
+    padding:
+      28px 0;
+
+    text-align: center;
+  }
+
+  .contact-footer-brand {
+    justify-content: center;
+  }
+
+  .contact-footer > a {
+    justify-self: center;
+  }
+}
+.contact-instagram-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  border: 1px solid rgba(197, 166, 106, 0.35);
+  border-radius: 50%;
+
+  color: #c5a66a;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+/* ==================================================
+   NAVBAR — DESKTOP + MOBILE FINAL
+================================================== */
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-booking {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 38px;
+  padding: 0 18px;
+
+  border: 1px solid rgba(197, 166, 106, 0.35);
+
+  color: #c5a66a;
+  text-decoration: none;
+
+  font-family: "Montserrat", sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 2px;
+
+  transition:
+    background 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.nav-booking:hover {
+  color: #090806;
+  background: #c5a66a;
+  border-color: #c5a66a;
+}
+
+.mobile-menu-button {
+  display: none;
+
+  width: 42px;
+  height: 42px;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid rgba(197, 166, 106, 0.25);
+  border-radius: 50%;
+
+  color: #c5a66a;
+  background: rgba(0, 0, 0, 0.3);
+
+  cursor: pointer;
+}
+
+/* MOBİL AÇILIR MENÜ */
+
+.mobile-menu {
+  display: none;
+}
+
+/* ==================================================
+   TABLET / MOBILE
+================================================== */
+
+@media (max-width: 900px) {
+  .navbar {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-booking {
+    display: none;
+  }
+
+  .nav-instagram {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: flex;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9998;
+
+    display: block;
+
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+  }
+
+  .mobile-menu-inner {
+    position: absolute;
+    inset: 0;
+
+    min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 105px 7% 35px;
+
+    overflow-y: auto;
+
+    background:
+      radial-gradient(
+        circle at 80% 15%,
+        rgba(197, 166, 106, 0.12),
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        #0d0b08 0%,
+        #050505 60%,
+        #020202 100%
+      );
+  }
+
+  .mobile-menu-label {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    margin-bottom: 35px;
+
+    color: #756b5d;
+
+    font-family: "Montserrat", sans-serif;
+    font-size: 7px;
+    font-weight: 600;
+    letter-spacing: 3px;
+  }
+
+  .mobile-menu-label div {
+    width: 45px;
+    height: 1px;
+
+    background: rgba(197, 166, 106, 0.3);
+  }
+
+  .mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-menu-links a {
+    display: grid;
+    grid-template-columns: 35px 1fr auto;
+    align-items: center;
+    gap: 10px;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid rgba(197, 166, 106, 0.12);
+
+    color: #e8e1d6;
+    text-decoration: none;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(29px, 8vw, 42px);
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .mobile-link-number {
+    color: #746a5c;
+
+    font-family: "Montserrat", sans-serif;
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+
+  .mobile-menu-links svg {
+    color: #a88a59;
+  }
+
+  .mobile-menu-bottom {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+    margin-top: auto;
+    padding-top: 35px;
+  }
+
+  .mobile-menu-bottom > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mobile-menu-bottom span {
+    color: #71695e;
+
+    font-family: "Montserrat", sans-serif;
+    font-size: 6px;
+    font-weight: 600;
+    letter-spacing: 2px;
+  }
+
+  .mobile-menu-bottom a,
+  .mobile-menu-bottom p {
+    margin: 0;
+
+    color: #b9afa1;
+    text-decoration: none;
+
+    font-family: "Montserrat", sans-serif;
+    font-size: 8px;
+    line-height: 1.6;
+  }
+
+  /* Navbar her zaman mobil menünün üstünde */
+  .navbar {
+    z-index: 9999;
+  }
+}
+
+@media (max-width: 520px) {
+  .navbar {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .brand span {
+    font-size: 14px;
+  }
+
+  .mobile-menu-inner {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .mobile-menu-bottom {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .mobile-menu-bottom > div:last-child {
+    grid-column: 1 / -1;
+  }
+}
+/* ==================================================
+   HERO — MOBILE FINAL FIX
+   Masaüstünü etkilemez
+================================================== */
+
+@media (max-width: 768px) {
+
+  .hero {
+    width: 100%;
+    min-height: 100svh;
+
+    padding: 100px 0 70px;
+
+    overflow: hidden;
+  }
+
+  .hero-content {
+    width: 88%;
+    max-width: 100%;
+
+    margin: 0 auto;
+
+    text-align: center;
+  }
+
+  /* HASSA • HATAY */
+
+  .hero-eyebrow {
+    margin-bottom: 22px;
+
+    gap: 10px;
+
+    font-size: 8px;
+    letter-spacing: 3px;
+  }
+
+  .hero-eyebrow span {
+    width: 25px;
+  }
+
+  /* ERKEK KUAFÖRÜ */
+
+  .hero-small-title {
+    margin-bottom: 8px;
+
+    font-size: 9px;
+
+    letter-spacing: 5px;
+    text-indent: 5px;
+  }
+
+  /* BARBAROS */
+
+  .hero h1 {
+    width: 100%;
+
+    font-size: clamp(55px, 18vw, 72px);
+
+    line-height: 0.9;
+
+    letter-spacing: -2px;
+
+    white-space: nowrap;
+
+    animation: none;
+  }
+
+  /* ALTIN ÇİZGİ */
+
+  .hero-line {
+    width: 65px;
+
+    margin:
+      27px auto 23px;
+  }
+
+  /* AÇIKLAMA */
+
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+
+    font-size: 18px;
+    line-height: 1.45;
+  }
+
+  /* BUTONLAR */
+
+  .hero-actions {
+    width: 100%;
+
+    margin-top: 30px;
+
+    flex-direction: column;
+
+    gap: 12px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+    max-width: 300px;
+
+    min-width: 0;
+
+    margin: 0 auto;
+
+    box-sizing: border-box;
+  }
+
+  .primary-button {
+    padding: 17px 20px;
+  }
+
+  .secondary-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 52px;
+  }
+
+  /* SCROLL */
+
+  .scroll-indicator {
+    bottom: 20px;
+
+    transform: scale(0.85);
+  }
+
+  .hero-number {
+    display: none;
+  }
+}
+
+
+/* DAHA KÜÇÜK TELEFONLAR */
+
+@media (max-width: 390px) {
+
+  .hero-content {
+    width: 90%;
+  }
+
+  .hero h1 {
+    font-size: 17vw;
+
+    letter-spacing: -1.5px;
+  }
+
+  .hero-small-title {
+    font-size: 8px;
+    letter-spacing: 4px;
+  }
+
+  .hero-description {
+    font-size: 17px;
+  }
+}
