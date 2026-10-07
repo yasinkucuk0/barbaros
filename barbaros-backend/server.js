@@ -1,7 +1,15 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 
-const appointmentRoutes = require("./src/routes/appointment.routes");
+const appointmentRoutes = require(
+  "./src/routes/appointment.routes"
+);
+
+const authRoutes = require(
+  "./src/routes/auth.routes"
+);
 
 const app = express();
 const PORT = 5000;
@@ -16,11 +24,22 @@ app.use(
 // JSON body okuyabilmek için
 app.use(express.json());
 
+// API kontrol endpoint'i
 app.get("/", (req, res) => {
   res.send("Barbaros API çalışıyor 🚀");
 });
 
-app.use("/api/appointments", appointmentRoutes);
+// Admin giriş sistemi
+app.use(
+  "/api/auth",
+  authRoutes
+);
+
+// Randevu sistemi
+app.use(
+  "/api/appointments",
+  appointmentRoutes
+);
 
 app.listen(PORT, () => {
   console.log(

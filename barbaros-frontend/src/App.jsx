@@ -13,11 +13,13 @@ import Booking from "./sections/Booking";
 import Contact from "./sections/Contact";
 
 import AdminAppointments from "./admin/pages/AdminAppointments";
+import AdminLogin from "./admin/pages/AdminLogin";
 
 import "./App.css";
 
 function MainSite() {
-  const [introVisible, setIntroVisible] = useState(true);
+  const [introVisible, setIntroVisible] =
+    useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -30,7 +32,9 @@ function MainSite() {
   return (
     <main className="site">
       <AnimatePresence>
-        {introVisible && <Intro key="intro" />}
+        {introVisible && (
+          <Intro key="intro" />
+        )}
       </AnimatePresence>
 
       <Hero />
@@ -45,11 +49,54 @@ function MainSite() {
   );
 }
 
+function AdminPage() {
+  const [token, setToken] = useState(() => {
+    return sessionStorage.getItem(
+      "barbaros_admin_token"
+    );
+  });
+
+  const handleLogin = (newToken) => {
+    sessionStorage.setItem(
+      "barbaros_admin_token",
+      newToken
+    );
+
+    setToken(newToken);
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem(
+      "barbaros_admin_token"
+    );
+
+    setToken(null);
+  };
+
+  if (!token) {
+    return (
+      <AdminLogin
+        onLogin={handleLogin}
+      />
+    );
+  }
+
+  return (
+    <AdminAppointments
+      token={token}
+      onLogout={handleLogout}
+    />
+  );
+}
+
 function App() {
   const path = window.location.pathname;
 
-  if (path === "/admin" || path === "/admin/") {
-    return <AdminAppointments />;
+  if (
+    path === "/admin" ||
+    path === "/admin/"
+  ) {
+    return <AdminPage />;
   }
 
   return <MainSite />;
