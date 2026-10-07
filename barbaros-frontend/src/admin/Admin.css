@@ -1099,3 +1099,671 @@
     padding: 0 12px;
   }
 }
+/* ========================================
+   ADMIN DASHBOARD
+======================================== */
+
+.admin-dashboard {
+  width: 100%;
+  min-height: 100vh;
+  padding: 48px;
+
+  font-family:
+    "Montserrat",
+    Arial,
+    sans-serif;
+
+  color: #f4f0e8;
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(201, 164, 101, 0.08),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(201, 164, 101, 0.04),
+      transparent 30%
+    ),
+    #090909;
+}
+
+/* ========================================
+   DASHBOARD HEADER
+======================================== */
+
+.admin-dashboard-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+
+  max-width: 1500px;
+  margin: 0 auto 38px;
+}
+
+.admin-dashboard-eyebrow {
+  margin: 0 0 12px;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+
+  color: #c9a465;
+}
+
+.admin-dashboard-heading h1 {
+  margin: 0;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 500;
+  line-height: 0.95;
+
+  color: #f5f1e8;
+}
+
+.admin-dashboard-heading h1 span {
+  color: #c9a465;
+}
+
+.admin-dashboard-heading > div > p:last-child {
+  max-width: 620px;
+  margin: 18px 0 0;
+
+  font-size: 12px;
+  line-height: 1.8;
+
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.admin-dashboard-date {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  flex-shrink: 0;
+
+  padding: 13px 17px;
+
+  border: 1px solid rgba(201, 164, 101, 0.22);
+
+  background: rgba(255, 255, 255, 0.025);
+
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.admin-dashboard-date svg {
+  color: #c9a465;
+}
+
+/* ========================================
+   STATISTIC CARDS
+======================================== */
+
+.admin-dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+
+  max-width: 1500px;
+  margin: 0 auto 22px;
+}
+
+.admin-dashboard-card {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 17px;
+
+  min-height: 112px;
+  padding: 22px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.012)
+    );
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.admin-dashboard-card::after {
+  content: "";
+
+  position: absolute;
+  right: -35px;
+  bottom: -55px;
+
+  width: 110px;
+  height: 110px;
+
+  border-radius: 50%;
+
+  background: rgba(201, 164, 101, 0.07);
+
+  filter: blur(10px);
+
+  pointer-events: none;
+}
+
+.admin-dashboard-card:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(201, 164, 101, 0.32);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(201, 164, 101, 0.07),
+      rgba(255, 255, 255, 0.015)
+    );
+}
+
+.admin-dashboard-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  border: 1px solid rgba(201, 164, 101, 0.25);
+
+  background: rgba(201, 164, 101, 0.07);
+
+  color: #c9a465;
+}
+
+.admin-dashboard-card > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.admin-dashboard-card span {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.admin-dashboard-card strong {
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1;
+
+  color: #f5f1e8;
+}
+
+/* ========================================
+   MAIN DASHBOARD GRID
+======================================== */
+
+.admin-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.8fr);
+  gap: 22px;
+
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.admin-dashboard-side {
+  display: grid;
+  gap: 22px;
+}
+
+.admin-dashboard-panel {
+  position: relative;
+
+  padding: 27px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.035),
+      rgba(255, 255, 255, 0.012)
+    );
+}
+
+.admin-dashboard-panel::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 70px;
+  height: 1px;
+
+  background: #c9a465;
+}
+
+/* ========================================
+   PANEL TITLES
+======================================== */
+
+.admin-dashboard-panel-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  padding-bottom: 21px;
+  margin-bottom: 5px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.admin-dashboard-panel-title > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.admin-dashboard-panel-title span {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2px;
+
+  color: #c9a465;
+}
+
+.admin-dashboard-panel-title h2 {
+  margin: 0;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 27px;
+  font-weight: 500;
+
+  color: #f5f1e8;
+}
+
+.admin-dashboard-panel-title svg {
+  color: rgba(201, 164, 101, 0.7);
+}
+
+/* ========================================
+   TODAY APPOINTMENTS
+======================================== */
+
+.admin-dashboard-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-dashboard-appointment {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr) 150px;
+  align-items: center;
+  gap: 18px;
+
+  min-height: 78px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+
+  transition:
+    background 0.2s ease,
+    padding 0.2s ease;
+}
+
+.admin-dashboard-appointment:last-child {
+  border-bottom: 0;
+}
+
+.admin-dashboard-appointment:hover {
+  padding-left: 10px;
+
+  background: rgba(201, 164, 101, 0.025);
+}
+
+.admin-dashboard-time {
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 25px;
+  font-weight: 600;
+
+  color: #c9a465;
+}
+
+.admin-dashboard-customer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-dashboard-customer strong {
+  font-size: 12px;
+  font-weight: 600;
+
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.admin-dashboard-customer span {
+  font-size: 9px;
+  letter-spacing: 0.8px;
+
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.admin-dashboard-barber {
+  justify-self: end;
+
+  padding: 7px 10px;
+
+  border: 1px solid rgba(201, 164, 101, 0.18);
+
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ========================================
+   NEXT APPOINTMENT
+======================================== */
+
+.admin-next-appointment {
+  padding: 25px 0 5px;
+}
+
+.admin-next-appointment > strong {
+  display: block;
+
+  margin-bottom: 11px;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 52px;
+  font-weight: 500;
+  line-height: 0.9;
+
+  color: #c9a465;
+}
+
+.admin-next-appointment h3 {
+  margin: 18px 0 5px;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 25px;
+  font-weight: 500;
+
+  color: #f5f1e8;
+}
+
+.admin-next-appointment p {
+  margin: 0 0 15px;
+
+  font-size: 10px;
+  letter-spacing: 0.7px;
+
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.admin-next-appointment > span {
+  display: inline-flex;
+
+  padding: 7px 10px;
+
+  border: 1px solid rgba(201, 164, 101, 0.2);
+
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1px;
+
+  color: #c9a465;
+}
+
+/* ========================================
+   BARBER WORKLOAD
+======================================== */
+
+.admin-barber-workload {
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 8px;
+}
+
+.admin-barber-workload > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 18px 0;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.admin-barber-workload > div:last-child {
+  border-bottom: 0;
+}
+
+.admin-barber-workload span {
+  font-size: 11px;
+  font-weight: 500;
+
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.admin-barber-workload strong {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+
+  color: #c9a465;
+}
+
+/* ========================================
+   EMPTY / LOADING / ERROR
+======================================== */
+
+.admin-dashboard-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 145px;
+  padding: 25px;
+
+  text-align: center;
+
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  line-height: 1.7;
+
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.admin-dashboard-message,
+.admin-dashboard-error {
+  max-width: 1500px;
+  margin: 100px auto;
+
+  padding: 25px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  text-align: center;
+
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.admin-dashboard-message {
+  color: #c9a465;
+}
+
+.admin-dashboard-error {
+  border-color: rgba(190, 70, 70, 0.3);
+
+  color: #d98b8b;
+}
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 1100px) {
+  .admin-dashboard {
+    padding: 35px 25px;
+  }
+
+  .admin-dashboard-cards {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .admin-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-dashboard-side {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 700px) {
+  .admin-dashboard {
+    padding: 28px 16px;
+  }
+
+  .admin-dashboard-heading {
+    align-items: flex-start;
+    flex-direction: column;
+
+    margin-bottom: 28px;
+  }
+
+  .admin-dashboard-heading h1 {
+    font-size: 44px;
+  }
+
+  .admin-dashboard-date {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-dashboard-cards {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+  }
+
+  .admin-dashboard-card {
+    min-height: 105px;
+
+    padding: 17px;
+
+    gap: 13px;
+  }
+
+  .admin-dashboard-card-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .admin-dashboard-card strong {
+    font-size: 29px;
+  }
+
+  .admin-dashboard-card span {
+    font-size: 7px;
+    letter-spacing: 1.1px;
+  }
+
+  .admin-dashboard-side {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-dashboard-panel {
+    padding: 20px;
+  }
+
+  .admin-dashboard-appointment {
+    grid-template-columns: 60px 1fr;
+
+    gap: 12px;
+
+    padding: 14px 0;
+  }
+
+  .admin-dashboard-barber {
+    grid-column: 2;
+
+    justify-self: start;
+  }
+
+  .admin-dashboard-time {
+    font-size: 21px;
+  }
+}
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 430px) {
+  .admin-dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-dashboard-card {
+    min-height: 90px;
+  }
+
+  .admin-dashboard-heading h1 {
+    font-size: 39px;
+  }
+}

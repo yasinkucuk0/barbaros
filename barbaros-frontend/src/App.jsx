@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+
 import { AnimatePresence } from "motion/react";
 
 import Intro from "./components/Intro";
@@ -13,6 +18,7 @@ import Booking from "./sections/Booking";
 import Contact from "./sections/Contact";
 
 import AdminAppointments from "./admin/pages/AdminAppointments";
+import AdminDashboard from "./admin/pages/AdminDashboard";
 import AdminLogin from "./admin/pages/AdminLogin";
 
 import "./App.css";
@@ -26,7 +32,9 @@ function MainSite() {
       setIntroVisible(false);
     }, 2200);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
@@ -56,22 +64,30 @@ function AdminPage() {
     );
   });
 
-  const handleLogin = (newToken) => {
-    sessionStorage.setItem(
-      "barbaros_admin_token",
-      newToken
-    );
+  const [activePage, setActivePage] =
+    useState("dashboard");
 
-    setToken(newToken);
-  };
+  const handleLogin = useCallback(
+    (newToken) => {
+      sessionStorage.setItem(
+        "barbaros_admin_token",
+        newToken
+      );
 
-  const handleLogout = () => {
+      setToken(newToken);
+      setActivePage("dashboard");
+    },
+    []
+  );
+
+  const handleLogout = useCallback(() => {
     sessionStorage.removeItem(
       "barbaros_admin_token"
     );
 
     setToken(null);
-  };
+    setActivePage("dashboard");
+  }, []);
 
   if (!token) {
     return (
@@ -82,15 +98,72 @@ function AdminPage() {
   }
 
   return (
-    <AdminAppointments
-      token={token}
-      onLogout={handleLogout}
-    />
+    <div className="admin-system">
+      <nav className="admin-main-navigation">
+        <div className="admin-main-navigation-brand">
+          BARBAROS
+        </div>
+
+        <div className="admin-main-navigation-links">
+          <button
+            type="button"
+            className={
+              activePage === "dashboard"
+                ? "active"
+                : ""
+            }
+            onClick={() => {
+              setActivePage("dashboard");
+            }}
+          >
+            KONTROL PANELİ
+          </button>
+
+          <button
+            type="button"
+            className={
+              activePage === "appointments"
+                ? "active"
+                : ""
+            }
+            onClick={() => {
+              setActivePage("appointments");
+            }}
+          >
+            RANDEVULAR
+          </button>
+        </div>
+
+        <button
+          type="button"
+          className="admin-main-navigation-logout"
+          onClick={handleLogout}
+        >
+          ÇIKIŞ
+        </button>
+      </nav>
+
+      <div className="admin-page-content">
+        {activePage === "dashboard" && (
+          <AdminDashboard
+            token={token}
+          />
+        )}
+
+        {activePage === "appointments" && (
+          <AdminAppointments
+            token={token}
+            onLogout={handleLogout}
+          />
+        )}
+      </div>
+    </div>
   );
 }
 
 function App() {
-  const path = window.location.pathname;
+  const path =
+    window.location.pathname;
 
   if (
     path === "/admin" ||

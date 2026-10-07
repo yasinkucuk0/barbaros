@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+
 import "../Admin.css";
 
 const pad = (value) => String(value).padStart(2, "0");
@@ -11,16 +12,33 @@ const getLocalDateString = () => {
   )}-${pad(today.getDate())}`;
 };
 
-function AdminAppointments({ token, onLogout }) {
-  const [appointments, setAppointments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [updatingId, setUpdatingId] = useState(null);
+function AdminAppointments({
+  token,
+  onLogout,
+}) {
+  const [appointments, setAppointments] =
+    useState([]);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [barberFilter, setBarberFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [dateFilter, setDateFilter] = useState("");
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  const [updatingId, setUpdatingId] =
+    useState(null);
+
+  const [searchTerm, setSearchTerm] =
+    useState("");
+
+  const [barberFilter, setBarberFilter] =
+    useState("all");
+
+  const [statusFilter, setStatusFilter] =
+    useState("all");
+
+  const [dateFilter, setDateFilter] =
+    useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -33,11 +51,11 @@ function AdminAppointments({ token, onLogout }) {
         const response = await fetch(
           "http://localhost:5000/api/appointments",
           {
-            method: "GET",
+            signal: controller.signal,
+
             headers: {
               Authorization: `Bearer ${token}`,
             },
-            signal: controller.signal,
           }
         );
 
@@ -48,15 +66,23 @@ function AdminAppointments({ token, onLogout }) {
           return;
         }
 
-        if (!response.ok) {
+        if (
+          !response.ok ||
+          !result.success
+        ) {
           throw new Error(
-            result.message || "Randevular alınamadı."
+            result.message ||
+              "Randevular alınamadı."
           );
         }
 
-        setAppointments(result.data || []);
+        setAppointments(
+          result.data || []
+        );
       } catch (error) {
-        if (error.name !== "AbortError") {
+        if (
+          error.name !== "AbortError"
+        ) {
           console.error(
             "Admin randevuları alınırken hata:",
             error
@@ -68,7 +94,9 @@ function AdminAppointments({ token, onLogout }) {
           );
         }
       } finally {
-        if (!controller.signal.aborted) {
+        if (
+          !controller.signal.aborted
+        ) {
           setLoading(false);
         }
       }
@@ -82,20 +110,26 @@ function AdminAppointments({ token, onLogout }) {
   }, [token, onLogout]);
 
   const stats = useMemo(() => {
-    const pending = appointments.filter(
-      (appointment) =>
-        appointment.status === "pending"
-    ).length;
+    const pending =
+      appointments.filter(
+        (appointment) =>
+          appointment.status ===
+          "pending"
+      ).length;
 
-    const confirmed = appointments.filter(
-      (appointment) =>
-        appointment.status === "confirmed"
-    ).length;
+    const confirmed =
+      appointments.filter(
+        (appointment) =>
+          appointment.status ===
+          "confirmed"
+      ).length;
 
-    const completed = appointments.filter(
-      (appointment) =>
-        appointment.status === "completed"
-    ).length;
+    const completed =
+      appointments.filter(
+        (appointment) =>
+          appointment.status ===
+          "completed"
+      ).length;
 
     return {
       total: appointments.length,
@@ -105,54 +139,72 @@ function AdminAppointments({ token, onLogout }) {
     };
   }, [appointments]);
 
-  const filteredAppointments = useMemo(() => {
-    const normalizedSearch = searchTerm
-      .trim()
-      .toLocaleLowerCase("tr-TR");
+  const filteredAppointments =
+    useMemo(() => {
+      const normalizedSearch =
+        searchTerm
+          .trim()
+          .toLocaleLowerCase("tr-TR");
 
-    return appointments.filter((appointment) => {
-      const name = (appointment.name || "")
-        .toLocaleLowerCase("tr-TR");
+      return appointments.filter(
+        (appointment) => {
+          const name = (
+            appointment.name || ""
+          ).toLocaleLowerCase("tr-TR");
 
-      const phone = appointment.phone || "";
+          const phone =
+            appointment.phone || "";
 
-      const service = (appointment.service || "")
-        .toLocaleLowerCase("tr-TR");
+          const service = (
+            appointment.service || ""
+          ).toLocaleLowerCase("tr-TR");
 
-      const matchesSearch =
-        normalizedSearch === "" ||
-        name.includes(normalizedSearch) ||
-        phone.includes(normalizedSearch) ||
-        service.includes(normalizedSearch);
+          const matchesSearch =
+            normalizedSearch === "" ||
+            name.includes(
+              normalizedSearch
+            ) ||
+            phone.includes(
+              normalizedSearch
+            ) ||
+            service.includes(
+              normalizedSearch
+            );
 
-      const matchesBarber =
-        barberFilter === "all" ||
-        appointment.barber === barberFilter;
+          const matchesBarber =
+            barberFilter === "all" ||
+            appointment.barber ===
+              barberFilter;
 
-      const matchesStatus =
-        statusFilter === "all" ||
-        appointment.status === statusFilter;
+          const matchesStatus =
+            statusFilter === "all" ||
+            appointment.status ===
+              statusFilter;
 
-      const matchesDate =
-        dateFilter === "" ||
-        appointment.date === dateFilter;
+          const matchesDate =
+            dateFilter === "" ||
+            appointment.date ===
+              dateFilter;
 
-      return (
-        matchesSearch &&
-        matchesBarber &&
-        matchesStatus &&
-        matchesDate
+          return (
+            matchesSearch &&
+            matchesBarber &&
+            matchesStatus &&
+            matchesDate
+          );
+        }
       );
-    });
-  }, [
-    appointments,
-    searchTerm,
-    barberFilter,
-    statusFilter,
-    dateFilter,
-  ]);
+    }, [
+      appointments,
+      searchTerm,
+      barberFilter,
+      statusFilter,
+      dateFilter,
+    ]);
 
-  const formatDate = (dateString) => {
+  const formatDate = (
+    dateString
+  ) => {
     if (!dateString) {
       return "-";
     }
@@ -163,7 +215,9 @@ function AdminAppointments({ token, onLogout }) {
     return `${day}.${month}.${year}`;
   };
 
-  const getStatusText = (status) => {
+  const getStatusText = (
+    status
+  ) => {
     switch (status) {
       case "pending":
         return "Bekliyor";
@@ -182,7 +236,9 @@ function AdminAppointments({ token, onLogout }) {
     }
   };
 
-  const getStatusClass = (status) => {
+  const getStatusClass = (
+    status
+  ) => {
     switch (status) {
       case "confirmed":
         return "admin-status-confirmed";
@@ -199,65 +255,86 @@ function AdminAppointments({ token, onLogout }) {
     }
   };
 
-  const updateAppointmentStatus = async (
-    appointmentId,
-    newStatus
-  ) => {
-    try {
-      setUpdatingId(appointmentId);
-
-      const response = await fetch(
-        `http://localhost:5000/api/appointments/${appointmentId}/status`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            status: newStatus,
-          }),
-        }
-      );
-
-      const result = await response.json();
-
-      if (response.status === 401) {
-        onLogout();
-        return;
-      }
-
-      if (!response.ok) {
-        throw new Error(
-          result.message ||
-            "Randevu durumu güncellenemedi."
+  const updateAppointmentStatus =
+    async (
+      appointmentId,
+      newStatus
+    ) => {
+      try {
+        setUpdatingId(
+          appointmentId
         );
+
+        const response = await fetch(
+          `http://localhost:5000/api/appointments/${appointmentId}/status`,
+          {
+            method: "PATCH",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              Authorization:
+                `Bearer ${token}`,
+            },
+
+            body: JSON.stringify({
+              status: newStatus,
+            }),
+          }
+        );
+
+        const result =
+          await response.json();
+
+        if (
+          response.status === 401
+        ) {
+          onLogout();
+          return;
+        }
+
+        if (
+          !response.ok ||
+          !result.success
+        ) {
+          throw new Error(
+            result.message ||
+              "Randevu durumu güncellenemedi."
+          );
+        }
+
+        setAppointments(
+          (
+            currentAppointments
+          ) =>
+            currentAppointments.map(
+              (appointment) =>
+                appointment.id ===
+                appointmentId
+                  ? result.data
+                  : appointment
+            )
+        );
+      } catch (error) {
+        console.error(
+          "Randevu durumu güncellenirken hata:",
+          error
+        );
+
+        window.alert(
+          error.message ||
+            "Randevu durumu güncellenirken bir hata oluştu."
+        );
+      } finally {
+        setUpdatingId(null);
       }
-
-      setAppointments((currentAppointments) =>
-        currentAppointments.map((appointment) =>
-          appointment.id === appointmentId
-            ? result.data
-            : appointment
-        )
-      );
-    } catch (error) {
-      console.error(
-        "Randevu durumu güncellenirken hata:",
-        error
-      );
-
-      window.alert(
-        error.message ||
-          "Randevu durumu güncellenirken bir hata oluştu."
-      );
-    } finally {
-      setUpdatingId(null);
-    }
-  };
+    };
 
   const showToday = () => {
-    setDateFilter(getLocalDateString());
+    setDateFilter(
+      getLocalDateString()
+    );
   };
 
   const clearFilters = () => {
@@ -267,8 +344,11 @@ function AdminAppointments({ token, onLogout }) {
     setDateFilter("");
   };
 
-  const todayDate = getLocalDateString();
-  const isTodayActive = dateFilter === todayDate;
+  const todayDate =
+    getLocalDateString();
+
+  const isTodayActive =
+    dateFilter === todayDate;
 
   const hasActiveFilters =
     searchTerm !== "" ||
@@ -292,15 +372,10 @@ function AdminAppointments({ token, onLogout }) {
 
           <div className="admin-header-right">
             <span className="admin-live-dot" />
-            <span>SİSTEM AKTİF</span>
 
-            <button
-              type="button"
-              className="admin-logout-button"
-              onClick={onLogout}
-            >
-              ÇIKIŞ YAP
-            </button>
+            <span>
+              SİSTEM AKTİF
+            </span>
           </div>
         </header>
 
@@ -350,7 +425,9 @@ function AdminAppointments({ token, onLogout }) {
           <button
             type="button"
             className={`admin-today-button ${
-              isTodayActive ? "is-active" : ""
+              isTodayActive
+                ? "is-active"
+                : ""
             }`}
             onClick={showToday}
           >
@@ -358,7 +435,9 @@ function AdminAppointments({ token, onLogout }) {
           </button>
 
           <span className="admin-today-info">
-            {formatDate(todayDate)}
+            {formatDate(
+              todayDate
+            )}
           </span>
         </div>
 
@@ -374,7 +453,9 @@ function AdminAppointments({ token, onLogout }) {
               placeholder="İsim, telefon veya hizmet..."
               value={searchTerm}
               onChange={(event) =>
-                setSearchTerm(event.target.value)
+                setSearchTerm(
+                  event.target.value
+                )
               }
             />
           </div>
@@ -388,7 +469,9 @@ function AdminAppointments({ token, onLogout }) {
               id="admin-barber"
               value={barberFilter}
               onChange={(event) =>
-                setBarberFilter(event.target.value)
+                setBarberFilter(
+                  event.target.value
+                )
               }
             >
               <option value="all">
@@ -414,7 +497,9 @@ function AdminAppointments({ token, onLogout }) {
               id="admin-status-filter"
               value={statusFilter}
               onChange={(event) =>
-                setStatusFilter(event.target.value)
+                setStatusFilter(
+                  event.target.value
+                )
               }
             >
               <option value="all">
@@ -449,7 +534,9 @@ function AdminAppointments({ token, onLogout }) {
               type="date"
               value={dateFilter}
               onChange={(event) =>
-                setDateFilter(event.target.value)
+                setDateFilter(
+                  event.target.value
+                )
               }
             />
           </div>
@@ -458,8 +545,12 @@ function AdminAppointments({ token, onLogout }) {
             <button
               type="button"
               className="admin-filter-clear"
-              onClick={clearFilters}
-              disabled={!hasActiveFilters}
+              onClick={
+                clearFilters
+              }
+              disabled={
+                !hasActiveFilters
+              }
             >
               TEMİZLE
             </button>
@@ -477,13 +568,18 @@ function AdminAppointments({ token, onLogout }) {
 
               {hasActiveFilters && (
                 <p className="admin-filter-result">
-                  Filtrelenen sonuçlar gösteriliyor
+                  Filtrelenen
+                  sonuçlar
+                  gösteriliyor
                 </p>
               )}
             </div>
 
             <span className="admin-count">
-              {filteredAppointments.length} KAYIT
+              {
+                filteredAppointments.length
+              }{" "}
+              KAYIT
             </span>
           </div>
 
@@ -493,7 +589,10 @@ function AdminAppointments({ token, onLogout }) {
                 BARBAROS
               </span>
 
-              <p>Randevular yükleniyor...</p>
+              <p>
+                Randevular
+                yükleniyor...
+              </p>
             </div>
           ) : error ? (
             <div className="admin-message">
@@ -503,24 +602,29 @@ function AdminAppointments({ token, onLogout }) {
 
               <p>{error}</p>
             </div>
-          ) : appointments.length === 0 ? (
+          ) : appointments.length ===
+            0 ? (
             <div className="admin-message">
               <span className="admin-message-label">
                 RANDEVULAR
               </span>
 
               <p>
-                Henüz kayıtlı randevu bulunmuyor.
+                Henüz kayıtlı
+                randevu bulunmuyor.
               </p>
             </div>
-          ) : filteredAppointments.length === 0 ? (
+          ) : filteredAppointments.length ===
+            0 ? (
             <div className="admin-message">
               <span className="admin-message-label">
                 SONUÇ BULUNAMADI
               </span>
 
               <p>
-                Seçtiğiniz filtrelere uygun randevu yok.
+                Seçtiğiniz
+                filtrelere uygun
+                randevu yok.
               </p>
             </div>
           ) : (
@@ -528,39 +632,77 @@ function AdminAppointments({ token, onLogout }) {
               <table className="admin-table">
                 <thead>
                   <tr>
-                    <th>Müşteri</th>
-                    <th>Telefon</th>
-                    <th>Hizmet</th>
-                    <th>Usta</th>
-                    <th>Tarih</th>
-                    <th>Saat</th>
-                    <th>Durum</th>
-                    <th>İşlemler</th>
+                    <th>
+                      Müşteri
+                    </th>
+
+                    <th>
+                      Telefon
+                    </th>
+
+                    <th>
+                      Hizmet
+                    </th>
+
+                    <th>
+                      Usta
+                    </th>
+
+                    <th>
+                      Tarih
+                    </th>
+
+                    <th>
+                      Saat
+                    </th>
+
+                    <th>
+                      Durum
+                    </th>
+
+                    <th>
+                      İşlemler
+                    </th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {filteredAppointments.map(
-                    (appointment) => {
+                    (
+                      appointment
+                    ) => {
                       const isUpdating =
-                        updatingId === appointment.id;
+                        updatingId ===
+                        appointment.id;
 
                       return (
-                        <tr key={appointment.id}>
+                        <tr
+                          key={
+                            appointment.id
+                          }
+                        >
                           <td className="admin-customer">
-                            {appointment.name}
+                            {
+                              appointment.name
+                            }
                           </td>
 
                           <td>
-                            {appointment.phone}
+                            {
+                              appointment.phone
+                            }
                           </td>
 
                           <td>
-                            {appointment.service}
+                            {
+                              appointment.service
+                            }
                           </td>
 
                           <td>
-                            {appointment.barber}
+                            {
+                              appointment.barber
+                            }
                           </td>
 
                           <td>
@@ -570,7 +712,9 @@ function AdminAppointments({ token, onLogout }) {
                           </td>
 
                           <td className="admin-time">
-                            {appointment.time}
+                            {
+                              appointment.time
+                            }
                           </td>
 
                           <td>
@@ -592,7 +736,9 @@ function AdminAppointments({ token, onLogout }) {
                                 <button
                                   type="button"
                                   className="admin-action-button admin-action-confirm"
-                                  disabled={isUpdating}
+                                  disabled={
+                                    isUpdating
+                                  }
                                   onClick={() =>
                                     updateAppointmentStatus(
                                       appointment.id,
@@ -609,7 +755,9 @@ function AdminAppointments({ token, onLogout }) {
                                 <button
                                   type="button"
                                   className="admin-action-button admin-action-complete"
-                                  disabled={isUpdating}
+                                  disabled={
+                                    isUpdating
+                                  }
                                   onClick={() =>
                                     updateAppointmentStatus(
                                       appointment.id,
@@ -626,7 +774,9 @@ function AdminAppointments({ token, onLogout }) {
                                 <button
                                   type="button"
                                   className="admin-action-button admin-action-cancel"
-                                  disabled={isUpdating}
+                                  disabled={
+                                    isUpdating
+                                  }
                                   onClick={() =>
                                     updateAppointmentStatus(
                                       appointment.id,

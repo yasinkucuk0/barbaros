@@ -6533,3 +6533,291 @@ a.contact-card:hover {
   opacity: 0.3;
   cursor: not-allowed;
 }
+/* ========================================
+   ADMIN MAIN NAVIGATION
+======================================== */
+
+.admin-system {
+  min-height: 100vh;
+  background: #090909;
+}
+
+.admin-main-navigation {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  width: 100%;
+  min-height: 72px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 48px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+  background: rgba(9, 9, 9, 0.94);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* ========================================
+   BRAND
+======================================== */
+
+.admin-main-navigation-brand {
+  position: relative;
+
+  margin-right: 50px;
+
+  font-family:
+    "Cormorant Garamond",
+    Georgia,
+    serif;
+
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: 4px;
+
+  color: #c9a465;
+}
+
+.admin-main-navigation-brand::after {
+  content: "";
+
+  position: absolute;
+  top: 50%;
+  right: -26px;
+
+  width: 1px;
+  height: 25px;
+
+  transform: translateY(-50%);
+
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ========================================
+   NAVIGATION LINKS
+======================================== */
+
+.admin-main-navigation-links {
+  display: flex;
+  align-items: stretch;
+
+  align-self: stretch;
+
+  gap: 4px;
+}
+
+.admin-main-navigation-links button {
+  position: relative;
+
+  min-width: 120px;
+
+  padding: 0 20px;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  font-family:
+    "Montserrat",
+    Arial,
+    sans-serif;
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+
+  color: rgba(255, 255, 255, 0.4);
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.admin-main-navigation-links button::after {
+  content: "";
+
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 0;
+
+  height: 2px;
+
+  transform: scaleX(0);
+  transform-origin: center;
+
+  background: #c9a465;
+
+  transition: transform 0.25s ease;
+}
+
+.admin-main-navigation-links button:hover {
+  color: rgba(255, 255, 255, 0.85);
+
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.admin-main-navigation-links button.active {
+  color: #c9a465;
+}
+
+.admin-main-navigation-links button.active::after {
+  transform: scaleX(1);
+}
+
+/* ========================================
+   LOGOUT
+======================================== */
+
+.admin-main-navigation-logout {
+  margin-left: auto;
+
+  height: 36px;
+
+  padding: 0 17px;
+
+  border: 1px solid rgba(201, 164, 101, 0.3);
+
+  background: transparent;
+
+  font-family:
+    "Montserrat",
+    Arial,
+    sans-serif;
+
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+
+  color: rgba(201, 164, 101, 0.8);
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-main-navigation-logout:hover {
+  transform: translateY(-1px);
+
+  border-color: #c9a465;
+
+  background: #c9a465;
+
+  color: #090909;
+}
+
+/* ========================================
+   SUBTLE GOLD LINE
+======================================== */
+
+.admin-main-navigation::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+
+  width: 90px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #c9a465,
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+  .admin-main-navigation {
+    padding: 0 25px;
+  }
+
+  .admin-main-navigation-brand {
+    margin-right: 30px;
+
+    font-size: 20px;
+    letter-spacing: 3px;
+  }
+
+  .admin-main-navigation-brand::after {
+    display: none;
+  }
+
+  .admin-main-navigation-links button {
+    min-width: auto;
+
+    padding: 0 15px;
+
+    font-size: 8px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 700px) {
+  .admin-main-navigation {
+    position: sticky;
+
+    min-height: auto;
+
+    flex-wrap: wrap;
+
+    padding: 16px;
+  }
+
+  .admin-main-navigation-brand {
+    margin-right: auto;
+
+    font-size: 19px;
+  }
+
+  .admin-main-navigation-logout {
+    height: 34px;
+
+    padding: 0 12px;
+  }
+
+  .admin-main-navigation-links {
+    order: 3;
+
+    width: 100%;
+    height: 48px;
+
+    margin-top: 13px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .admin-main-navigation-links button {
+    flex: 1;
+
+    padding: 0 10px;
+  }
+
+  .admin-main-navigation-links button::after {
+    left: 10px;
+    right: 10px;
+  }
+}
