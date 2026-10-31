@@ -31,6 +31,11 @@ app.use(express.json());
 // API kontrol endpoint'i
 app.get("/", (req, res) => {
   res.send("Barbaros API çalışıyor 🚀");
+
+// API bağlantı testi
+app.get('/api/test', (req, res) => {
+  res.status(200).json({ message: 'API bağlantısı başarılı' });
+});
 });
 
 // Admin giriş sistemi
