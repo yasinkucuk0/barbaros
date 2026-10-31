@@ -1,74 +1,66 @@
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight, Scissors } from "lucide-react";
 
-const services = [
-  {
-    number: "01",
-    title: "SAÇ KESİMİ",
-    subtitle: "Kişiye özel kesim",
-    description:
-      "Yüz şeklinize, saç yapınıza ve tarzınıza uygun profesyonel kesim.",
-    price: "250",
-  },
-  {
-    number: "02",
-    title: "ÖĞRENCİ",
-    subtitle: "Öğrenci saç kesimi",
-    description:
-      "Öğrenciler için modern, temiz ve kişiye uygun saç kesimi.",
-    price: "200",
-  },
-  {
-    number: "03",
-    title: "ÇOCUK",
-    subtitle: "Çocuk saç kesimi",
-    description:
-      "Küçük misafirlerimiz için rahat, özenli ve kontrollü kesim.",
-    price: "200",
-  },
-  {
-    number: "04",
-    title: "SAKAL",
-    subtitle: "Sakal tasarımı",
-    description:
-      "Yüz hatlarına uygun sakal formu, çizgi düzenleme ve şekillendirme.",
-    price: "150",
-  },
-  {
-    number: "05",
-    title: "SAÇ + SAKAL",
-    subtitle: "Eksiksiz görünüm",
-    description:
-      "Saç ve sakalın birlikte ele alındığı bütünlüklü bir stil.",
-    price: "300",
-  },
-  {
-    number: "06",
-    title: "SAÇ & YÜZ BAKIMI",
-    subtitle: "Bakım ritüeli",
-    description:
-      "Tıraş deneyimini tamamlayan saç ve yüz bakım uygulaması.",
-    price: "150",
-  },
-  {
-    number: "07",
-    title: "BUHAR & CİLT TEMİZLEME",
-    subtitle: "Derinlemesine bakım",
-    description:
-      "Buhar uygulamasıyla desteklenen ferahlatıcı cilt temizleme bakımı.",
-    price: "200",
-  },
-  {
-    number: "08",
-    title: "KERATİN",
-    subtitle: "Profesyonel saç bakımı",
-    description:
-      "Saçın daha bakımlı ve düzenli görünmesini destekleyen keratin uygulaması.",
-    price: "500",
-  },
-];
+import { DEFAULT_SERVICES } from "../data/defaultServices";
+
+const SERVICES_API = "http://localhost:5000/api/services";
+
+const normalizeName = (value) =>
+  String(value || "")
+    .toLocaleUpperCase("tr-TR")
+    .replace(/\s+/g, " ")
+    .trim();
+
+// Panelde hizmet girildiyse site listesi tamamen veritabanından gelir
+// (panelde gizlenen hizmet sitede görünmez). Açıklamalar sabit listeden
+// isimle eşleştirilerek korunur. API'ye ulaşılamazsa veya henüz hizmet
+// girilmediyse sabit liste gösterilir.
+const mergeServices = (apiServices) => {
+  if (!Array.isArray(apiServices) || apiServices.length === 0) {
+    return DEFAULT_SERVICES;
+  }
+
+  const defaults = new Map(
+    DEFAULT_SERVICES.map((item) => [normalizeName(item.title), item])
+  );
+
+  return apiServices.map((item, index) => {
+    const title = normalizeName(item.name);
+    const base = defaults.get(title);
+
+    return {
+      number: String(index + 1).padStart(2, "0"),
+      title,
+      subtitle: base?.subtitle || `${item.durationMinutes} dakika`,
+      description: base?.description || "",
+      price: String(item.price),
+    };
+  });
+};
 
 function Services() {
+  const [services, setServices] = useState(DEFAULT_SERVICES);
+
+  useEffect(() => {
+    let active = true;
+
+    fetch(SERVICES_API)
+      .then((response) => response.json())
+      .then((result) => {
+        if (active && result?.success) {
+          setServices(mergeServices(result.data));
+        }
+      })
+      .catch(() => {
+        // Backend kapaliysa sabit liste kalir.
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <section className="services" id="hizmetler">
       <div className="services-grid-bg" />
@@ -131,7 +123,7 @@ function Services() {
             {services.map((service, index) => (
               <motion.article
                 className="service-item"
-                key={service.number}
+                key={`${service.number}-${service.title}`}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}

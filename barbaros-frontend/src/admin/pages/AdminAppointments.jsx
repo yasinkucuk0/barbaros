@@ -1,6 +1,9 @@
+
 import { useEffect, useMemo, useState } from "react";
 
 import "../Admin.css";
+
+const API_URL = "http://localhost:5000/api/appointments";
 
 const pad = (value) => String(value).padStart(2, "0");
 
@@ -12,33 +15,51 @@ const getLocalDateString = () => {
   )}-${pad(today.getDate())}`;
 };
 
-function AdminAppointments({
-  token,
-  onLogout,
-}) {
-  const [appointments, setAppointments] =
-    useState([]);
+const formatDate = (dateString) => {
+  if (!dateString) return "-";
 
-  const [loading, setLoading] =
-    useState(true);
+  const [year, month, day] = dateString.split("-");
+  return `${day}.${month}.${year}`;
+};
 
-  const [error, setError] =
-    useState("");
+const getStatusText = (status) => {
+  switch (status) {
+    case "pending":
+      return "Bekliyor";
+    case "confirmed":
+      return "Onaylandı";
+    case "completed":
+      return "Tamamlandı";
+    case "cancelled":
+      return "İptal";
+    default:
+      return status || "-";
+  }
+};
 
-  const [updatingId, setUpdatingId] =
-    useState(null);
+const getStatusClass = (status) => {
+  switch (status) {
+    case "confirmed":
+      return "admin-status-confirmed";
+    case "completed":
+      return "admin-status-completed";
+    case "cancelled":
+      return "admin-status-cancelled";
+    default:
+      return "admin-status-pending";
+  }
+};
 
-  const [searchTerm, setSearchTerm] =
-    useState("");
+function AdminAppointments({ token, onLogout }) {
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [updatingId, setUpdatingId] = useState(null);
 
-  const [barberFilter, setBarberFilter] =
-    useState("all");
-
-  const [statusFilter, setStatusFilter] =
-    useState("all");
-
-  const [dateFilter, setDateFilter] =
-    useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [barberFilter, setBarberFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -48,16 +69,12 @@ function AdminAppointments({
         setLoading(true);
         setError("");
 
-        const response = await fetch(
-          "http://localhost:5000/api/appointments",
-          {
-            signal: controller.signal,
-
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(API_URL, {
+          signal: controller.signal,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const result = await response.json();
 
@@ -66,37 +83,33 @@ function AdminAppointments({
           return;
         }
 
-        if (
-          !response.ok ||
-          !result.success
-        ) {
+        if (!response.ok || !result.success) {
           throw new Error(
-            result.message ||
-              "Randevular alınamadı."
+            result.message || "Randevular alınamadı."
           );
         }
 
-        setAppointments(
-          result.data || []
-        );
-      } catch (error) {
-        if (
-          error.name !== "AbortError"
-        ) {
+        if (!Array.isArray(result.data)) {
+          throw new Error(
+            "Sunucudan geçersiz randevu listesi alındı."
+          );
+        }
+
+        setAppointments(result.data);
+      } catch (fetchError) {
+        if (fetchError.name !== "AbortError") {
           console.error(
-            "Admin randevuları alınırken hata:",
-            error
+            "Randevular yüklenirken hata:",
+            fetchError
           );
 
           setError(
-            error.message ||
-              "Randevular yüklenirken bir hata oluştu."
+            fetchError.message ||
+              "Randevular yüklenirken hata oluştu."
           );
         }
       } finally {
-        if (
-          !controller.signal.aborted
-        ) {
+        if (!controller.signal.aborted) {
           setLoading(false);
         }
       }
@@ -104,238 +117,155 @@ function AdminAppointments({
 
     fetchAppointments();
 
-    return () => {
-      controller.abort();
-    };
+    return () => controller.abort();
   }, [token, onLogout]);
 
   const stats = useMemo(() => {
-    const pending =
-      appointments.filter(
-        (appointment) =>
-          appointment.status ===
-          "pending"
-      ).length;
-
-    const confirmed =
-      appointments.filter(
-        (appointment) =>
-          appointment.status ===
-          "confirmed"
-      ).length;
-
-    const completed =
-      appointments.filter(
-        (appointment) =>
-          appointment.status ===
-          "completed"
-      ).length;
-
     return {
       total: appointments.length,
-      pending,
-      confirmed,
-      completed,
+      pending: appointments.filter(
+        (item) => item.status === "pending"
+      ).length,
+      confirmed: appointments.filter(
+        (item) => item.status === "confirmed"
+      ).length,
+      completed: appointments.filter(
+        (item) => item.status === "completed"
+      ).length,
+      cancelled: appointments.filter(
+        (item) => item.status === "cancelled"
+      ).length,
     };
   }, [appointments]);
 
-  const filteredAppointments =
-    useMemo(() => {
-      const normalizedSearch =
-        searchTerm
-          .trim()
-          .toLocaleLowerCase("tr-TR");
+  // GEÇİCİ HATA AYIKLAMA KONTROLÜ
+  console.log("BARBAROS RANDEVU KONTROLÜ", {
+    toplam: appointments.length,
+    randevular: appointments,
+    stats,
+  });
 
-      return appointments.filter(
-        (appointment) => {
-          const name = (
-            appointment.name || ""
-          ).toLocaleLowerCase("tr-TR");
+  const filteredAppointments = useMemo(() => {
+    const normalizedSearch = searchTerm
+      .trim()
+      .toLocaleLowerCase("tr-TR");
 
-          const phone =
-            appointment.phone || "";
+    return appointments.filter((appointment) => {
+      const name = (appointment.name || "")
+        .toLocaleLowerCase("tr-TR");
 
-          const service = (
-            appointment.service || ""
-          ).toLocaleLowerCase("tr-TR");
+      const phone = appointment.phone || "";
 
-          const matchesSearch =
-            normalizedSearch === "" ||
-            name.includes(
-              normalizedSearch
-            ) ||
-            phone.includes(
-              normalizedSearch
-            ) ||
-            service.includes(
-              normalizedSearch
-            );
+      const service = (appointment.service || "")
+        .toLocaleLowerCase("tr-TR");
 
-          const matchesBarber =
-            barberFilter === "all" ||
-            appointment.barber ===
-              barberFilter;
+      const matchesSearch =
+        !normalizedSearch ||
+        name.includes(normalizedSearch) ||
+        phone.includes(normalizedSearch) ||
+        service.includes(normalizedSearch);
 
-          const matchesStatus =
-            statusFilter === "all" ||
-            appointment.status ===
-              statusFilter;
+      const matchesBarber =
+        barberFilter === "all" ||
+        appointment.barber === barberFilter;
 
-          const matchesDate =
-            dateFilter === "" ||
-            appointment.date ===
-              dateFilter;
+      const matchesStatus =
+        statusFilter === "all" ||
+        appointment.status === statusFilter;
 
-          return (
-            matchesSearch &&
-            matchesBarber &&
-            matchesStatus &&
-            matchesDate
-          );
+      const matchesDate =
+        !dateFilter ||
+        appointment.date === dateFilter;
+
+      return (
+        matchesSearch &&
+        matchesBarber &&
+        matchesStatus &&
+        matchesDate
+      );
+    });
+  }, [
+    appointments,
+    searchTerm,
+    barberFilter,
+    statusFilter,
+    dateFilter,
+  ]);
+
+  const updateAppointmentStatus = async (
+    appointmentId,
+    newStatus
+  ) => {
+    if (updatingId !== null) return;
+
+    try {
+      setUpdatingId(appointmentId);
+
+      const response = await fetch(
+        `${API_URL}/${appointmentId}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            status: newStatus,
+          }),
         }
       );
-    }, [
-      appointments,
-      searchTerm,
-      barberFilter,
-      statusFilter,
-      dateFilter,
-    ]);
 
-  const formatDate = (
-    dateString
-  ) => {
-    if (!dateString) {
-      return "-";
-    }
+      const result = await response.json();
 
-    const [year, month, day] =
-      dateString.split("-");
-
-    return `${day}.${month}.${year}`;
-  };
-
-  const getStatusText = (
-    status
-  ) => {
-    switch (status) {
-      case "pending":
-        return "Bekliyor";
-
-      case "confirmed":
-        return "Onaylandı";
-
-      case "completed":
-        return "Tamamlandı";
-
-      case "cancelled":
-        return "İptal";
-
-      default:
-        return status || "-";
-    }
-  };
-
-  const getStatusClass = (
-    status
-  ) => {
-    switch (status) {
-      case "confirmed":
-        return "admin-status-confirmed";
-
-      case "completed":
-        return "admin-status-completed";
-
-      case "cancelled":
-        return "admin-status-cancelled";
-
-      case "pending":
-      default:
-        return "admin-status-pending";
-    }
-  };
-
-  const updateAppointmentStatus =
-    async (
-      appointmentId,
-      newStatus
-    ) => {
-      try {
-        setUpdatingId(
-          appointmentId
-        );
-
-        const response = await fetch(
-          `http://localhost:5000/api/appointments/${appointmentId}/status`,
-          {
-            method: "PATCH",
-
-            headers: {
-              "Content-Type":
-                "application/json",
-
-              Authorization:
-                `Bearer ${token}`,
-            },
-
-            body: JSON.stringify({
-              status: newStatus,
-            }),
-          }
-        );
-
-        const result =
-          await response.json();
-
-        if (
-          response.status === 401
-        ) {
-          onLogout();
-          return;
-        }
-
-        if (
-          !response.ok ||
-          !result.success
-        ) {
-          throw new Error(
-            result.message ||
-              "Randevu durumu güncellenemedi."
-          );
-        }
-
-        setAppointments(
-          (
-            currentAppointments
-          ) =>
-            currentAppointments.map(
-              (appointment) =>
-                appointment.id ===
-                appointmentId
-                  ? result.data
-                  : appointment
-            )
-        );
-      } catch (error) {
-        console.error(
-          "Randevu durumu güncellenirken hata:",
-          error
-        );
-
-        window.alert(
-          error.message ||
-            "Randevu durumu güncellenirken bir hata oluştu."
-        );
-      } finally {
-        setUpdatingId(null);
+      if (response.status === 401) {
+        onLogout();
+        return;
       }
-    };
 
-  const showToday = () => {
-    setDateFilter(
-      getLocalDateString()
-    );
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message ||
+            "Randevu durumu güncellenemedi."
+        );
+      }
+
+      setAppointments((currentAppointments) =>
+        currentAppointments.map((appointment) =>
+          String(appointment.id) === String(appointmentId)
+            ? {
+                ...appointment,
+                ...(result.data &&
+                typeof result.data === "object"
+                  ? result.data
+                  : {}),
+                status: newStatus,
+              }
+            : appointment
+        )
+      );
+    } catch (updateError) {
+      console.error(
+        "Randevu güncelleme hatası:",
+        updateError
+      );
+
+      window.alert(
+        updateError.message ||
+          "Randevu güncellenirken hata oluştu."
+      );
+    } finally {
+      setUpdatingId(null);
+    }
   };
+
+  const todayDate = getLocalDateString();
+  const isTodayActive = dateFilter === todayDate;
+
+  const hasActiveFilters =
+    searchTerm !== "" ||
+    barberFilter !== "all" ||
+    statusFilter !== "all" ||
+    dateFilter !== "";
 
   const clearFilters = () => {
     setSearchTerm("");
@@ -343,18 +273,6 @@ function AdminAppointments({
     setStatusFilter("all");
     setDateFilter("");
   };
-
-  const todayDate =
-    getLocalDateString();
-
-  const isTodayActive =
-    dateFilter === todayDate;
-
-  const hasActiveFilters =
-    searchTerm !== "" ||
-    barberFilter !== "all" ||
-    statusFilter !== "all" ||
-    dateFilter !== "";
 
   return (
     <main className="admin-page">
@@ -372,10 +290,7 @@ function AdminAppointments({
 
           <div className="admin-header-right">
             <span className="admin-live-dot" />
-
-            <span>
-              SİSTEM AKTİF
-            </span>
+            <span>SİSTEM AKTİF</span>
           </div>
         </header>
 
@@ -384,7 +299,6 @@ function AdminAppointments({
             <span className="admin-stat-label">
               Toplam Randevu
             </span>
-
             <strong className="admin-stat-value">
               {stats.total}
             </strong>
@@ -394,7 +308,6 @@ function AdminAppointments({
             <span className="admin-stat-label">
               Bekleyen
             </span>
-
             <strong className="admin-stat-value">
               {stats.pending}
             </strong>
@@ -404,7 +317,6 @@ function AdminAppointments({
             <span className="admin-stat-label">
               Onaylanan
             </span>
-
             <strong className="admin-stat-value">
               {stats.confirmed}
             </strong>
@@ -414,7 +326,6 @@ function AdminAppointments({
             <span className="admin-stat-label">
               Tamamlanan
             </span>
-
             <strong className="admin-stat-value">
               {stats.completed}
             </strong>
@@ -425,19 +336,15 @@ function AdminAppointments({
           <button
             type="button"
             className={`admin-today-button ${
-              isTodayActive
-                ? "is-active"
-                : ""
+              isTodayActive ? "is-active" : ""
             }`}
-            onClick={showToday}
+            onClick={() => setDateFilter(todayDate)}
           >
             BUGÜN
           </button>
 
           <span className="admin-today-info">
-            {formatDate(
-              todayDate
-            )}
+            {formatDate(todayDate)}
           </span>
         </div>
 
@@ -453,9 +360,7 @@ function AdminAppointments({
               placeholder="İsim, telefon veya hizmet..."
               value={searchTerm}
               onChange={(event) =>
-                setSearchTerm(
-                  event.target.value
-                )
+                setSearchTerm(event.target.value)
               }
             />
           </div>
@@ -469,19 +374,15 @@ function AdminAppointments({
               id="admin-barber"
               value={barberFilter}
               onChange={(event) =>
-                setBarberFilter(
-                  event.target.value
-                )
+                setBarberFilter(event.target.value)
               }
             >
               <option value="all">
                 Tüm Ustalar
               </option>
-
               <option value="Yasin Küçük">
                 Yasin Küçük
               </option>
-
               <option value="Emir Küçük">
                 Emir Küçük
               </option>
@@ -497,27 +398,21 @@ function AdminAppointments({
               id="admin-status-filter"
               value={statusFilter}
               onChange={(event) =>
-                setStatusFilter(
-                  event.target.value
-                )
+                setStatusFilter(event.target.value)
               }
             >
               <option value="all">
                 Tüm Durumlar
               </option>
-
               <option value="pending">
                 Bekliyor
               </option>
-
               <option value="confirmed">
                 Onaylandı
               </option>
-
               <option value="completed">
                 Tamamlandı
               </option>
-
               <option value="cancelled">
                 İptal
               </option>
@@ -534,9 +429,7 @@ function AdminAppointments({
               type="date"
               value={dateFilter}
               onChange={(event) =>
-                setDateFilter(
-                  event.target.value
-                )
+                setDateFilter(event.target.value)
               }
             />
           </div>
@@ -545,12 +438,8 @@ function AdminAppointments({
             <button
               type="button"
               className="admin-filter-clear"
-              onClick={
-                clearFilters
-              }
-              disabled={
-                !hasActiveFilters
-              }
+              onClick={clearFilters}
+              disabled={!hasActiveFilters}
             >
               TEMİZLE
             </button>
@@ -568,18 +457,13 @@ function AdminAppointments({
 
               {hasActiveFilters && (
                 <p className="admin-filter-result">
-                  Filtrelenen
-                  sonuçlar
-                  gösteriliyor
+                  Filtrelenen sonuçlar gösteriliyor
                 </p>
               )}
             </div>
 
             <span className="admin-count">
-              {
-                filteredAppointments.length
-              }{" "}
-              KAYIT
+              {filteredAppointments.length} KAYIT
             </span>
           </div>
 
@@ -588,43 +472,31 @@ function AdminAppointments({
               <span className="admin-message-label">
                 BARBAROS
               </span>
-
-              <p>
-                Randevular
-                yükleniyor...
-              </p>
+              <p>Randevular yükleniyor...</p>
             </div>
           ) : error ? (
             <div className="admin-message">
               <span className="admin-message-label">
                 BAĞLANTI HATASI
               </span>
-
               <p>{error}</p>
             </div>
-          ) : appointments.length ===
-            0 ? (
+          ) : appointments.length === 0 ? (
             <div className="admin-message">
               <span className="admin-message-label">
                 RANDEVULAR
               </span>
-
               <p>
-                Henüz kayıtlı
-                randevu bulunmuyor.
+                Henüz kayıtlı randevu bulunmuyor.
               </p>
             </div>
-          ) : filteredAppointments.length ===
-            0 ? (
+          ) : filteredAppointments.length === 0 ? (
             <div className="admin-message">
               <span className="admin-message-label">
                 SONUÇ BULUNAMADI
               </span>
-
               <p>
-                Seçtiğiniz
-                filtrelere uygun
-                randevu yok.
+                Seçtiğiniz filtrelere uygun randevu yok.
               </p>
             </div>
           ) : (
@@ -632,89 +504,39 @@ function AdminAppointments({
               <table className="admin-table">
                 <thead>
                   <tr>
-                    <th>
-                      Müşteri
-                    </th>
-
-                    <th>
-                      Telefon
-                    </th>
-
-                    <th>
-                      Hizmet
-                    </th>
-
-                    <th>
-                      Usta
-                    </th>
-
-                    <th>
-                      Tarih
-                    </th>
-
-                    <th>
-                      Saat
-                    </th>
-
-                    <th>
-                      Durum
-                    </th>
-
-                    <th>
-                      İşlemler
-                    </th>
+                    <th>Müşteri</th>
+                    <th>Telefon</th>
+                    <th>Hizmet</th>
+                    <th>Usta</th>
+                    <th>Tarih</th>
+                    <th>Saat</th>
+                    <th>Durum</th>
+                    <th>İşlemler</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {filteredAppointments.map(
-                    (
-                      appointment
-                    ) => {
+                    (appointment) => {
                       const isUpdating =
-                        updatingId ===
-                        appointment.id;
+                        updatingId === appointment.id;
 
                       return (
-                        <tr
-                          key={
-                            appointment.id
-                          }
-                        >
+                        <tr key={appointment.id}>
                           <td className="admin-customer">
-                            {
-                              appointment.name
-                            }
+                            {appointment.name}
                           </td>
 
-                          <td>
-                            {
-                              appointment.phone
-                            }
-                          </td>
+                          <td>{appointment.phone}</td>
+                          <td>{appointment.service}</td>
+                          <td>{appointment.barber}</td>
 
                           <td>
-                            {
-                              appointment.service
-                            }
-                          </td>
-
-                          <td>
-                            {
-                              appointment.barber
-                            }
-                          </td>
-
-                          <td>
-                            {formatDate(
-                              appointment.date
-                            )}
+                            {formatDate(appointment.date)}
                           </td>
 
                           <td className="admin-time">
-                            {
-                              appointment.time
-                            }
+                            {appointment.time}
                           </td>
 
                           <td>
@@ -732,60 +554,74 @@ function AdminAppointments({
                           <td>
                             <div className="admin-actions">
                               {appointment.status !==
-                                "confirmed" && (
-                                <button
-                                  type="button"
-                                  className="admin-action-button admin-action-confirm"
-                                  disabled={
-                                    isUpdating
-                                  }
-                                  onClick={() =>
-                                    updateAppointmentStatus(
-                                      appointment.id,
-                                      "confirmed"
-                                    )
-                                  }
-                                >
-                                  ONAYLA
-                                </button>
-                              )}
+                                "confirmed" &&
+                                appointment.status !==
+                                  "completed" &&
+                                appointment.status !==
+                                  "cancelled" && (
+                                  <button
+                                    type="button"
+                                    className="admin-action-button admin-action-confirm"
+                                    disabled={
+                                      updatingId !== null
+                                    }
+                                    onClick={() =>
+                                      updateAppointmentStatus(
+                                        appointment.id,
+                                        "confirmed"
+                                      )
+                                    }
+                                  >
+                                    ONAYLA
+                                  </button>
+                                )}
 
                               {appointment.status !==
-                                "completed" && (
-                                <button
-                                  type="button"
-                                  className="admin-action-button admin-action-complete"
-                                  disabled={
-                                    isUpdating
-                                  }
-                                  onClick={() =>
-                                    updateAppointmentStatus(
-                                      appointment.id,
-                                      "completed"
-                                    )
-                                  }
-                                >
-                                  TAMAMLA
-                                </button>
-                              )}
+                                "completed" &&
+                                appointment.status !==
+                                  "cancelled" && (
+                                  <button
+                                    type="button"
+                                    className="admin-action-button admin-action-complete"
+                                    disabled={
+                                      updatingId !== null
+                                    }
+                                    onClick={() =>
+                                      updateAppointmentStatus(
+                                        appointment.id,
+                                        "completed"
+                                      )
+                                    }
+                                  >
+                                    TAMAMLA
+                                  </button>
+                                )}
 
                               {appointment.status !==
-                                "cancelled" && (
-                                <button
-                                  type="button"
-                                  className="admin-action-button admin-action-cancel"
-                                  disabled={
-                                    isUpdating
-                                  }
-                                  onClick={() =>
-                                    updateAppointmentStatus(
-                                      appointment.id,
-                                      "cancelled"
-                                    )
-                                  }
-                                >
-                                  İPTAL
-                                </button>
+                                "cancelled" &&
+                                appointment.status !==
+                                  "completed" && (
+                                  <button
+                                    type="button"
+                                    className="admin-action-button admin-action-cancel"
+                                    disabled={
+                                      updatingId !== null
+                                    }
+                                    onClick={() =>
+                                      updateAppointmentStatus(
+                                        appointment.id,
+                                        "cancelled"
+                                      )
+                                    }
+                                  >
+                                    İPTAL
+                                  </button>
+                                )}
+
+                              {isUpdating && (
+                                <span className="admin-today-info">
+                                  Güncelleniyor...
+                                </span>
                               )}
                             </div>
                           </td>

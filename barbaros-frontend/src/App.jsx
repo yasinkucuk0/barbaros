@@ -1,3 +1,4 @@
+
 import {
   useCallback,
   useEffect,
@@ -5,6 +6,7 @@ import {
 } from "react";
 
 import { AnimatePresence } from "motion/react";
+import { LockKeyhole } from "lucide-react";
 
 import Intro from "./components/Intro";
 
@@ -20,6 +22,7 @@ import Contact from "./sections/Contact";
 import AdminAppointments from "./admin/pages/AdminAppointments";
 import AdminDashboard from "./admin/pages/AdminDashboard";
 import AdminLogin from "./admin/pages/AdminLogin";
+import AdminServices from "./admin/pages/AdminServices";
 
 import "./App.css";
 
@@ -53,6 +56,43 @@ function MainSite() {
       <Reviews />
       <Booking />
       <Contact />
+
+      {/* Yönetici giriş bağlantısı */}
+      <footer
+        style={{
+          background: "#080808",
+          borderTop: "1px solid rgba(212,175,55,0.15)",
+          padding: "28px 20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <a
+          href="/admin"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "9px",
+            color: "#b9a47b",
+            textDecoration: "none",
+            fontSize: "11px",
+            fontWeight: 500,
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            transition: "color 0.2s ease",
+          }}
+          onMouseEnter={(event) => {
+            event.currentTarget.style.color = "#e8c878";
+          }}
+          onMouseLeave={(event) => {
+            event.currentTarget.style.color = "#b9a47b";
+          }}
+        >
+          <LockKeyhole size={14} strokeWidth={1.5} />
+          YÖNETİCİ GİRİŞİ
+        </a>
+      </footer>
     </main>
   );
 }
@@ -132,6 +172,20 @@ function AdminPage() {
           >
             RANDEVULAR
           </button>
+
+          <button
+            type="button"
+            className={
+              activePage === "services"
+                ? "active"
+                : ""
+            }
+            onClick={() => {
+              setActivePage("services");
+            }}
+          >
+            HİZMETLER
+          </button>
         </div>
 
         <button
@@ -150,6 +204,13 @@ function AdminPage() {
           />
         )}
 
+        {activePage === "services" && (
+          <AdminServices
+            token={token}
+            onLogout={handleLogout}
+          />
+        )}
+
         {activePage === "appointments" && (
           <AdminAppointments
             token={token}
@@ -162,8 +223,7 @@ function AdminPage() {
 }
 
 function App() {
-  const path =
-    window.location.pathname;
+  const path = window.location.pathname;
 
   if (
     path === "/admin" ||

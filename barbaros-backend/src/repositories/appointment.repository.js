@@ -28,6 +28,7 @@ const findByBarberDateAndTime = async (
       barber,
       date,
       time,
+      status: { not: 'cancelled' },
     },
   });
 };
@@ -37,6 +38,7 @@ const findByBarberAndDate = async (barber, date) => {
     where: {
       barber,
       date,
+      status: { not: "cancelled" },
     },
     select: {
       time: true,

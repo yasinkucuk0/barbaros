@@ -11,7 +11,10 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-const services = [
+const SERVICES_API = "http://localhost:5000/api/services";
+
+// Panel boşsa veya backend'e ulaşılamazsa kullanılan sabit liste.
+const fallbackServices = [
   { name: "Saç Kesimi", price: 250 },
   { name: "Öğrenci", price: 200 },
   { name: "Çocuk", price: 200 },
@@ -91,6 +94,38 @@ function Booking() {
     name: "",
     phone: "",
   });
+
+  const [services, setServices] = useState(fallbackServices);
+
+  // Yönetim panelindeki aktif hizmetler ve güncel fiyatlar.
+  useEffect(() => {
+    let active = true;
+
+    fetch(SERVICES_API)
+      .then((response) => response.json())
+      .then((result) => {
+        if (
+          active &&
+          result?.success &&
+          Array.isArray(result.data) &&
+          result.data.length > 0
+        ) {
+          setServices(
+            result.data.map((item) => ({
+              name: item.name,
+              price: item.price,
+            }))
+          );
+        }
+      })
+      .catch(() => {
+        // Backend kapalıysa sabit liste kalır.
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const [bookedTimes, setBookedTimes] = useState([]);
   const [loadingTimes, setLoadingTimes] = useState(false);

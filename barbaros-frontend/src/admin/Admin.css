@@ -1767,3 +1767,14 @@
     font-size: 39px;
   }
 }
+/* Randevu istatistikleri görünürlük kontrolü */
+.admin-stat-value,
+.admin-count {
+  font-family: Arial, sans-serif !important;
+  font-variant-numeric: normal !important;
+  font-feature-settings: normal !important;
+  font-size: 28px !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}

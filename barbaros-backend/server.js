@@ -11,6 +11,10 @@ const authRoutes = require(
   "./src/routes/auth.routes"
 );
 
+const serviceRoutes = require(
+  "./src/routes/service.routes"
+);
+
 const app = express();
 const PORT = 5000;
 
@@ -33,6 +37,12 @@ app.get("/", (req, res) => {
 app.use(
   "/api/auth",
   authRoutes
+);
+
+// Hizmet ve fiyat yönetimi
+app.use(
+  "/api/services",
+  serviceRoutes
 );
 
 // Randevu sistemi

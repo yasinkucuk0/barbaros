@@ -7,6 +7,8 @@ const {
   updateStatus,
 } = require("../repositories/appointment.repository");
 
+const serviceRepository = require("../repositories/service.repository");
+
 const allowedServices = [
   "Saç Kesimi",
   "Öğrenci",
@@ -17,6 +19,24 @@ const allowedServices = [
   "Buhar & Cilt Temizleme",
   "Keratin",
 ];
+
+const normalizeServiceName = (value) =>
+  String(value || "").toLocaleUpperCase("tr-TR").replace(/\s+/g, " ").trim();
+
+// Panelde aktif hizmet varsa randevu yalnızca onlarla alınır;
+// panel boşsa veya veritabanı okunamazsa sabit liste kullanılır.
+const getBookableServiceNames = async () => {
+  try {
+    const services = await serviceRepository.getAllServices();
+    const active = services
+      .filter((service) => service.isActive)
+      .map((service) => service.name);
+
+    return active.length > 0 ? active : allowedServices;
+  } catch (error) {
+    return allowedServices;
+  }
+};
 
 const allowedBarbers = [
   "Yasin Küçük",
@@ -74,7 +94,10 @@ const getBookedTimes = async (barber, date) => {
   );
 };
 
-const validateAppointment = (appointmentData) => {
+const validateAppointment = (
+  appointmentData,
+  serviceNames = allowedServices
+) => {
   const {
     name,
     phone,
@@ -103,7 +126,7 @@ const validateAppointment = (appointmentData) => {
     );
   }
 
-  if (!allowedServices.includes(service)) {
+  if (!serviceNames.includes(service)) {
     throw createError("Geçersiz hizmet seçimi.");
   }
 
@@ -142,8 +165,20 @@ const validateAppointment = (appointmentData) => {
   }
 };
 
-const createAppointment = async (appointmentData) => {
-  validateAppointment(appointmentData);
+const createAppointment = async (incomingData) => {
+  const serviceNames = await getBookableServiceNames();
+  const canonicalService = serviceNames.find(
+    (name) =>
+      normalizeServiceName(name) ===
+      normalizeServiceName(incomingData?.service)
+  );
+
+  const appointmentData = {
+    ...incomingData,
+    service: canonicalService || incomingData?.service,
+  };
+
+  validateAppointment(appointmentData, serviceNames);
 
   const existingAppointment =
     await findByBarberDateAndTime(
@@ -204,7 +239,17 @@ const changeAppointmentStatus = async (
     );
   }
 
-  return await updateStatus(id, status);
+  try {
+    return await updateStatus(id, status);
+  } catch (error) {
+    if (error.code === "P2002") {
+      throw createError(
+        "Bu tarih ve saatte baska bir aktif randevu var.",
+        409
+      );
+    }
+    throw error;
+  }
 };
 
 module.exports = {
