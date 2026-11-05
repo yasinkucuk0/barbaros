@@ -2,11 +2,11 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { MapPin, Scissors } from "lucide-react";
 
-import barberWork from "../assets/about/barber-work.png";
-import hatay from "../assets/about/hatay.png";
-import alanya from "../assets/about/alanya.png";
-import istanbul from "../assets/about/istanbul.png";
-import barbarosShop from "../assets/about/barbaros-shop.png";
+import barberWork from "../assets/about/barber-work.webp";
+import hatay from "../assets/about/hatay.webp";
+import alanya from "../assets/about/alanya.webp";
+import istanbul from "../assets/about/istanbul.webp";
+import barbarosShop from "../assets/about/barbaros-shop.webp";
 
 const journey = [
   {

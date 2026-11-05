@@ -881,7 +881,7 @@
       rgba(0, 0, 0, 0.08) 45%,
       rgba(0, 0, 0, 0.60) 100%
     ),
-    url("./assets/hero-barber.jpg");
+    url("./assets/hero-barber.webp");
 
   background-size: cover;
   background-position: center center;
@@ -944,7 +944,7 @@
         rgba(3, 3, 3, 0.68) 45%,
         rgba(3, 3, 3, 0.85) 100%
       ),
-      url("./assets/hero-barber.jpg");
+      url("./assets/hero-barber.webp");
 
     background-size: cover;
     background-position: center center;
@@ -970,7 +970,7 @@
       rgba(0, 0, 0, 0.10) 45%,
       rgba(0, 0, 0, 0.65) 100%
     ),
-    url("./assets/hero-barber.png");
+    url("./assets/hero-barber.webp");
 
   background-size: cover;
   background-position: center center;
@@ -1038,7 +1038,7 @@
         rgba(3, 3, 3, 0.48) 40%,
         rgba(3, 3, 3, 0.82) 100%
       ),
-      url("./assets/hero-barber.png");
+      url("./assets/hero-barber.webp");
 
     background-size: cover;
     background-position: 48% center;

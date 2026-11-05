@@ -1,30 +1,29 @@
-const { test, describe, expect } = require('node:test');
-const { strict: assertStrict } = require('node:assert/strict');
+// Barbaros randevu servisi birim testleri (UMAY 7, node:test).
+// Sadece veritabanina gitmeden ONCE yapilan dogrulamalar test edilir.
+const test = require("node:test");
+const assert = require("node:assert/strict");
+const service = require("./appointment.service");
 
-const { getAllAppointments, getBookedTimes, createAppointment, changeAppointmentStatus } = require('../appointment.service');
-
-describe('Appointment Service Tests', () => {
-  test('should reject with error when calling getAllAppointments with invalid input', async () => {
-    await assertStrict.rejects(getAllAppointments('invalidInput'));
+const rejectsWith = (promise, message) =>
+  assert.rejects(promise, (error) => {
+    assert.equal(error.message, message);
+    assert.equal(error.statusCode, 400);
+    return true;
   });
 
-  test('should reject with error when calling getBookedTimes with invalid barber', async () => {
-    await assertStrict.rejects(getBookedTimes('invalidBarber', '2023-10-01'));
-  });
+test("getBookedTimes: geçersiz usta reddedilir", async () => {
+  await rejectsWith(service.getBookedTimes("Olmayan Usta", "2030-01-01"), "Geçersiz usta seçimi.");
+});
 
-  test('should reject with error when calling getBookedTimes with invalid date', async () => {
-    await assertStrict.rejects(getBookedTimes('Yasin Küçük', 'invalidDate'));
-  });
+test("getBookedTimes: tarih yoksa reddedilir", async () => {
+  await rejectsWith(service.getBookedTimes("Yasin Küçük", ""), "Tarih bilgisi gereklidir.");
+});
 
-  test('should reject with error when calling createAppointment with invalid input', async () => {
-    await assertStrict.rejects(createAppointment({}));
-  });
+test("changeAppointmentStatus: geçersiz randevu numarası reddedilir", async () => {
+  await rejectsWith(service.changeAppointmentStatus("abc", "confirmed"), "Geçersiz randevu numarası.");
+  await rejectsWith(service.changeAppointmentStatus(0, "confirmed"), "Geçersiz randevu numarası.");
+});
 
-  test('should reject with error when calling changeAppointmentStatus with invalid id', async () => {
-    await assertStrict.rejects(changeAppointmentStatus('invalidId', 'pending'));
-  });
-
-  test('should reject with error when calling changeAppointmentStatus with invalid status', async () => {
-    await assertStrict.rejects(changeAppointmentStatus('1', 'invalidStatus'));
-  });
+test("changeAppointmentStatus: geçersiz durum reddedilir", async () => {
+  await rejectsWith(service.changeAppointmentStatus(1, "silindi"), "Geçersiz randevu durumu.");
 });

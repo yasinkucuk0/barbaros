@@ -1,11 +1,11 @@
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 
-import haircutImage from "../assets/gallery/haircut.png";
-import beardImage from "../assets/gallery/beard.png";
-import workshopImage from "../assets/gallery/workshop.png";
-import detailImage from "../assets/gallery/detail.png";
-import styleImage from "../assets/gallery/style.png";
+import haircutImage from "../assets/gallery/haircut.webp";
+import beardImage from "../assets/gallery/beard.webp";
+import workshopImage from "../assets/gallery/workshop.webp";
+import detailImage from "../assets/gallery/detail.webp";
+import styleImage from "../assets/gallery/style.webp";
 
 const galleryItems = [
   {
